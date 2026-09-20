@@ -1,0 +1,2494 @@
+{
+  "_nota": "Coordenadas reales (Google Places) cargadas para ~48 lugares principales (facultades, institutos, museos, etc.); estacionamientos, pistas, accesos y algunos nodos internos siguen en null (no tienen entrada propia en Google Maps). Los tiempos entre paradas se MODELARON con distancia Haversine / 12 km/h (velocidad promedio estimada dentro de CU, no medida) para los tramos donde ambos extremos ya tienen coordenadas; donde falta alguna coordenada se conserva el placeholder de 2 min. Esto es mejor que el placeholder uniforme pero SIGUE SIN SER un tiempo medido: falta cronometrar tramos reales para la entrega final.",
+  "rutas": [
+    {
+      "id": 1,
+      "nombre": "Ruta 1",
+      "paradas": [
+        {
+          "id": "R1-00",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": 12
+        },
+        {
+          "id": "R1-01",
+          "nombre": "CENDI",
+          "alias": [],
+          "lat": 19.333359,
+          "lon": -99.195518,
+          "tiempo_al_siguiente_min": 9
+        },
+        {
+          "id": "R1-02",
+          "nombre": "Psiquiatría y Salud Mental",
+          "alias": [
+            "psiquiatria",
+            "salud mental"
+          ],
+          "lat": 19.3323394,
+          "lon": -99.1782453,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-03",
+          "nombre": "Facultad de Química",
+          "alias": [
+            "quimica",
+            "fq"
+          ],
+          "lat": 19.3312565,
+          "lon": -99.1813352,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-04",
+          "nombre": "ENALLT Edif. A y B",
+          "alias": [
+            "cele",
+            "enallt",
+            "lenguas"
+          ],
+          "lat": 19.3315089,
+          "lon": -99.1833596,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-05",
+          "nombre": "Facultad de Ingeniería",
+          "alias": [
+            "ing",
+            "fi",
+            "ingenieria"
+          ],
+          "lat": 19.3316089,
+          "lon": -99.1846025,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-06",
+          "nombre": "Facultad de Arquitectura",
+          "alias": [
+            "arquitectura",
+            "fa"
+          ],
+          "lat": 19.3305957,
+          "lon": -99.1872913,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-07",
+          "nombre": "Rectoría",
+          "alias": [
+            "rectoria"
+          ],
+          "lat": 19.3321734,
+          "lon": -99.1881895,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-08",
+          "nombre": "Psicología",
+          "alias": [
+            "fp"
+          ],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-09",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-10",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-11",
+          "nombre": "Facultad de Economía",
+          "alias": [
+            "economia"
+          ],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-12",
+          "nombre": "Facultad de Odontología",
+          "alias": [
+            "odontologia"
+          ],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R1-13",
+          "nombre": "Facultad de Medicina",
+          "alias": [
+            "medicina"
+          ],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R1-14",
+          "nombre": "Facultad de Veterinaria",
+          "alias": [
+            "veterinaria",
+            "fmvz"
+          ],
+          "lat": 19.3294944,
+          "lon": -99.1773144,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-15",
+          "nombre": "Instituto de Geofísica",
+          "alias": [
+            "geofisica"
+          ],
+          "lat": 19.3267734,
+          "lon": -99.1761884,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-16",
+          "nombre": "Química Conjunto D y E",
+          "alias": [
+            "quimica conjunto d y e"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R1-17",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Ruta 2",
+      "paradas": [
+        {
+          "id": "R2-00",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R2-01",
+          "nombre": "Química Conjunto D y E",
+          "alias": [
+            "quimica conjunto d y e"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R2-02",
+          "nombre": "Facultad de Ciencias Alumnos",
+          "alias": [
+            "ciencias alumnos"
+          ],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R2-03",
+          "nombre": "Facultad de Ciencias Camino Verde",
+          "alias": [
+            "ciencias camino verde"
+          ],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R2-04",
+          "nombre": "Facultad de Contaduría y Administración",
+          "alias": [
+            "fca",
+            "contaduria"
+          ],
+          "lat": 19.3240291,
+          "lon": -99.1846238,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R2-05",
+          "nombre": "Escuela de Trabajo Social",
+          "alias": [
+            "trabajo social",
+            "ents"
+          ],
+          "lat": 19.323925,
+          "lon": -99.1867731,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R2-06",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R2-07",
+          "nombre": "Metrobús CU",
+          "alias": [
+            "metrobus cu"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R2-08",
+          "nombre": "Educación a Distancia",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R2-09",
+          "nombre": "DGTIC",
+          "alias": [
+            "dgtic"
+          ],
+          "lat": 19.3222579,
+          "lon": -99.1845855,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R2-10",
+          "nombre": "Facultad de Ciencias",
+          "alias": [
+            "ciencias",
+            "fc"
+          ],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R2-11",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Ruta 3",
+      "paradas": [
+        {
+          "id": "R3-00",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-01",
+          "nombre": "Química Conjunto D y E",
+          "alias": [
+            "quimica conjunto d y e"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-02",
+          "nombre": "Tienda UNAM 2",
+          "alias": [],
+          "lat": 19.3209821,
+          "lon": -99.1755814,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-03",
+          "nombre": "Facultad de Ciencias Políticas",
+          "alias": [
+            "ciencias politicas",
+            "fcpys"
+          ],
+          "lat": 19.3186979,
+          "lon": -99.1781249,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-04",
+          "nombre": "Investigaciones Jurídicas 2",
+          "alias": [],
+          "lat": 19.3162824,
+          "lon": -99.1804068,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-05",
+          "nombre": "Biblioteca Nacional 2",
+          "alias": [],
+          "lat": 19.3164235,
+          "lon": -99.1847864,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-06",
+          "nombre": "Zona Cultural",
+          "alias": [
+            "ccu",
+            "centro cultural universitario"
+          ],
+          "lat": 19.3151515,
+          "lon": -99.1875385,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R3-07",
+          "nombre": "Unidad de Posgrado",
+          "alias": [
+            "posgrado"
+          ],
+          "lat": 19.3097532,
+          "lon": -99.1852555,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-08",
+          "nombre": "Posgrado de Economía",
+          "alias": [],
+          "lat": 19.3110217,
+          "lon": -99.1860797,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-09",
+          "nombre": "DGIRE",
+          "alias": [
+            "dgire"
+          ],
+          "lat": 19.3109472,
+          "lon": -99.1849837,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-10",
+          "nombre": "DGAPA",
+          "alias": [
+            "dgapa"
+          ],
+          "lat": 19.3097689,
+          "lon": -99.1818274,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-11",
+          "nombre": "Archivo General",
+          "alias": [],
+          "lat": 19.3091414,
+          "lon": -99.1805564,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-12",
+          "nombre": "Avenida IMAN",
+          "alias": [
+            "av iman",
+            "iman"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-13",
+          "nombre": "Investigaciones Filosóficas",
+          "alias": [],
+          "lat": 19.3144149,
+          "lon": -99.18013,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-14",
+          "nombre": "Investigaciones Filológicas",
+          "alias": [],
+          "lat": 19.3145542,
+          "lon": -99.1807098,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-15",
+          "nombre": "Coordinación de Humanidades",
+          "alias": [
+            "humanidades"
+          ],
+          "lat": 19.3149527,
+          "lon": -99.1814699,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-16",
+          "nombre": "UNIVERSUM",
+          "alias": [
+            "museo de las ciencias"
+          ],
+          "lat": 19.3111465,
+          "lon": -99.1803998,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-17",
+          "nombre": "Teatro y Danza",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-18",
+          "nombre": "MUAC",
+          "alias": [
+            "museo universitario arte contemporaneo"
+          ],
+          "lat": 19.3147846,
+          "lon": -99.1854369,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-19",
+          "nombre": "Biblioteca Nacional",
+          "alias": [],
+          "lat": 19.3164235,
+          "lon": -99.1847864,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-20",
+          "nombre": "Espacio Escultórico",
+          "alias": [],
+          "lat": 19.3185488,
+          "lon": -99.1820447,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-21",
+          "nombre": "Investigaciones Jurídicas",
+          "alias": [
+            "ij"
+          ],
+          "lat": 19.3162824,
+          "lon": -99.1804068,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R3-22",
+          "nombre": "T.V. UNAM",
+          "alias": [
+            "tv unam"
+          ],
+          "lat": 19.3172493,
+          "lon": -99.1754608,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R3-23",
+          "nombre": "CUEC",
+          "alias": [
+            "cuec"
+          ],
+          "lat": 19.3187908,
+          "lon": -99.1755928,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-24",
+          "nombre": "DGSA",
+          "alias": [
+            "dgsa"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-25",
+          "nombre": "Tienda UNAM",
+          "alias": [],
+          "lat": 19.3209821,
+          "lon": -99.1755814,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R3-26",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Ruta 4",
+      "paradas": [
+        {
+          "id": "R4-00",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-01",
+          "nombre": "Química Conjunto D y E",
+          "alias": [
+            "quimica conjunto d y e"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-02",
+          "nombre": "Facultad de Ciencias Alumnos",
+          "alias": [],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R4-03",
+          "nombre": "Facultad de Ciencias Camino Verde",
+          "alias": [],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R4-04",
+          "nombre": "Facultad de Contaduría y Administración",
+          "alias": [
+            "fca",
+            "contaduria",
+            "facultad de contaduria administracion"
+          ],
+          "lat": 19.3240291,
+          "lon": -99.1846238,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R4-05",
+          "nombre": "Escuela de Trabajo Social",
+          "alias": [
+            "trabajo social",
+            "ents"
+          ],
+          "lat": 19.323925,
+          "lon": -99.1867731,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R4-06",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-07",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-08",
+          "nombre": "Campos de futbol I",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-09",
+          "nombre": "Jardín Botánico",
+          "alias": [],
+          "lat": 19.3196222,
+          "lon": -99.1935392,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-10",
+          "nombre": "Campos de futbol II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-11",
+          "nombre": "Metrobús CU",
+          "alias": [
+            "metrobus cu"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-12",
+          "nombre": "Educación a Distancia",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R4-13",
+          "nombre": "DGTIC",
+          "alias": [
+            "dgtic"
+          ],
+          "lat": 19.3222579,
+          "lon": -99.1845855,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R4-14",
+          "nombre": "Facultad de Ciencias",
+          "alias": [
+            "ciencias",
+            "fc"
+          ],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R4-15",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Ruta 5",
+      "paradas": [
+        {
+          "id": "R5-00",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": 12
+        },
+        {
+          "id": "R5-01",
+          "nombre": "CENDI",
+          "alias": [],
+          "lat": 19.333359,
+          "lon": -99.195518,
+          "tiempo_al_siguiente_min": 9
+        },
+        {
+          "id": "R5-02",
+          "nombre": "Psiquiatría y Salud Mental",
+          "alias": [
+            "psiquiatria",
+            "salud mental"
+          ],
+          "lat": 19.3323394,
+          "lon": -99.1782453,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-03",
+          "nombre": "Medicina",
+          "alias": [],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-04",
+          "nombre": "Odontología",
+          "alias": [],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-05",
+          "nombre": "Economía",
+          "alias": [],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R5-06",
+          "nombre": "Av. Universidad",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R5-07",
+          "nombre": "Derecho",
+          "alias": [],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-08",
+          "nombre": "Filosofía",
+          "alias": [],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-09",
+          "nombre": "Facultad de Psicología",
+          "alias": [
+            "fp"
+          ],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-10",
+          "nombre": "Psicología",
+          "alias": [],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-11",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-12",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-13",
+          "nombre": "Facultad de Economía",
+          "alias": [
+            "economia"
+          ],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-14",
+          "nombre": "Facultad de Odontología",
+          "alias": [
+            "odontologia"
+          ],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R5-15",
+          "nombre": "Facultad de Medicina",
+          "alias": [
+            "medicina"
+          ],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R5-16",
+          "nombre": "Facultad de Veterinaria",
+          "alias": [
+            "veterinaria",
+            "fmvz"
+          ],
+          "lat": 19.3294944,
+          "lon": -99.1773144,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R5-17",
+          "nombre": "Instituto de Geofísica",
+          "alias": [
+            "geofisica"
+          ],
+          "lat": 19.3267734,
+          "lon": -99.1761884,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R5-18",
+          "nombre": "Química Conjunto D y E",
+          "alias": [
+            "quimica conjunto d y e"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R5-19",
+          "nombre": "Metro Universidad",
+          "alias": [
+            "metro u",
+            "base metro universidad"
+          ],
+          "lat": 19.324405,
+          "lon": -99.173913,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "Ruta 6",
+      "paradas": [
+        {
+          "id": "R6-00",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-01",
+          "nombre": "Campos de futbol I",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-02",
+          "nombre": "Pista de calentamiento I",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-03",
+          "nombre": "Pumitas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-04",
+          "nombre": "Pista de calentamiento II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-05",
+          "nombre": "Pumitas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-06",
+          "nombre": "Jardín Botánico",
+          "alias": [],
+          "lat": 19.3196222,
+          "lon": -99.1935392,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-07",
+          "nombre": "Campos de futbol II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-08",
+          "nombre": "Investigaciones Biomédicas",
+          "alias": [],
+          "lat": 19.3232746,
+          "lon": -99.1913146,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-09",
+          "nombre": "Metrobús CU-2",
+          "alias": [
+            "metrobus cu 2"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-10",
+          "nombre": "Metrobús CU",
+          "alias": [
+            "metrobus cu"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-11",
+          "nombre": "Educación a Distancia",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-12",
+          "nombre": "DGTIC",
+          "alias": [
+            "dgtic"
+          ],
+          "lat": 19.3222579,
+          "lon": -99.1845855,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R6-13",
+          "nombre": "Facultad de Ciencias Profesores",
+          "alias": [],
+          "lat": 19.3242765,
+          "lon": -99.1791318,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-14",
+          "nombre": "Investigación Científica",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-15",
+          "nombre": "Ciencias del Mar",
+          "alias": [],
+          "lat": 19.3289134,
+          "lon": -99.1788894,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-16",
+          "nombre": "Invernadero",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-17",
+          "nombre": "Anexo de Ingeniería",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-18",
+          "nombre": "Camino Verde",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-19",
+          "nombre": "Facultad de Contaduría y Administración",
+          "alias": [
+            "fca",
+            "contaduria",
+            "facultad de contaduria administracion"
+          ],
+          "lat": 19.3240291,
+          "lon": -99.1846238,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R6-20",
+          "nombre": "Escuela de Trabajo Social",
+          "alias": [
+            "trabajo social",
+            "ents"
+          ],
+          "lat": 19.323925,
+          "lon": -99.1867731,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R6-21",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-22",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-23",
+          "nombre": "MUCA",
+          "alias": [],
+          "lat": 19.3311362,
+          "lon": -99.1877231,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-24",
+          "nombre": "Estacionamiento 8",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-25",
+          "nombre": "Estacionamiento 7",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-26",
+          "nombre": "Estacionamiento 6",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-27",
+          "nombre": "Estacionamiento 4",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-28",
+          "nombre": "Estacionamiento 3",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-29",
+          "nombre": "Estacionamiento 2",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R6-30",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nombre": "Ruta 7",
+      "paradas": [
+        {
+          "id": "R7-00",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R7-01",
+          "nombre": "Facultad de Psicología",
+          "alias": [
+            "fp"
+          ],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-02",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-03",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-04",
+          "nombre": "Facultad de Economía",
+          "alias": [
+            "economia"
+          ],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-05",
+          "nombre": "Facultad de Odontología",
+          "alias": [
+            "odontologia"
+          ],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-06",
+          "nombre": "Facultad de Medicina",
+          "alias": [
+            "medicina"
+          ],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-07",
+          "nombre": "Facultad de Química",
+          "alias": [
+            "quimica",
+            "fq"
+          ],
+          "lat": 19.3312565,
+          "lon": -99.1813352,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-08",
+          "nombre": "ENALLT Edif. A y B",
+          "alias": [
+            "cele",
+            "enallt",
+            "lenguas"
+          ],
+          "lat": 19.3315089,
+          "lon": -99.1833596,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R7-09",
+          "nombre": "Facultad de Ingeniería",
+          "alias": [
+            "ing",
+            "fi",
+            "ingenieria"
+          ],
+          "lat": 19.3316089,
+          "lon": -99.1846025,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-10",
+          "nombre": "Facultad de Arquitectura",
+          "alias": [
+            "arquitectura",
+            "fa"
+          ],
+          "lat": 19.3305957,
+          "lon": -99.1872913,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-11",
+          "nombre": "Estacionamiento 8",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-12",
+          "nombre": "Estacionamiento 7",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-13",
+          "nombre": "Estacionamiento 6",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-14",
+          "nombre": "Estacionamiento 4",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-15",
+          "nombre": "Estacionamiento 3",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-16",
+          "nombre": "Estacionamiento 2",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R7-17",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nombre": "Ruta 8",
+      "paradas": [
+        {
+          "id": "R8-00",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R8-01",
+          "nombre": "Centro Médico",
+          "alias": [],
+          "lat": 19.3296423,
+          "lon": -99.1875194,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R8-02",
+          "nombre": "Alberca",
+          "alias": [],
+          "lat": 19.3301942,
+          "lon": -99.1850158,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R8-03",
+          "nombre": "Instituto de Ingeniería",
+          "alias": [
+            "instituto de ingenieria"
+          ],
+          "lat": 19.3303497,
+          "lon": -99.1828851,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R8-04",
+          "nombre": "Frontones",
+          "alias": [],
+          "lat": 19.3248843,
+          "lon": -99.1859972,
+          "tiempo_al_siguiente_min": 4
+        },
+        {
+          "id": "R8-05",
+          "nombre": "IIMAS",
+          "alias": [],
+          "lat": 19.3302953,
+          "lon": -99.1806673,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-06",
+          "nombre": "Invernadero",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-07",
+          "nombre": "Anexo de Ingeniería",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-08",
+          "nombre": "Camino Verde",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-09",
+          "nombre": "Facultad de Contaduría y Administración",
+          "alias": [
+            "fca",
+            "contaduria",
+            "facultad de contaduria administracion"
+          ],
+          "lat": 19.3240291,
+          "lon": -99.1846238,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R8-10",
+          "nombre": "Escuela de Trabajo Social",
+          "alias": [
+            "trabajo social",
+            "ents"
+          ],
+          "lat": 19.323925,
+          "lon": -99.1867731,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R8-11",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-12",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-13",
+          "nombre": "MUCA",
+          "alias": [],
+          "lat": 19.3311362,
+          "lon": -99.1877231,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-14",
+          "nombre": "Estacionamiento 8",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-15",
+          "nombre": "Estacionamiento 7",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-16",
+          "nombre": "Estacionamiento 6",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-17",
+          "nombre": "Estacionamiento 4",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-18",
+          "nombre": "Estacionamiento 3",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-19",
+          "nombre": "Estacionamiento 2",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R8-20",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nombre": "Ruta 9",
+      "paradas": [
+        {
+          "id": "R9-00",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-01",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-02",
+          "nombre": "MUCA",
+          "alias": [],
+          "lat": 19.3311362,
+          "lon": -99.1877231,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-03",
+          "nombre": "Rectoría",
+          "alias": [
+            "rectoria"
+          ],
+          "lat": 19.3321734,
+          "lon": -99.1881895,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-04",
+          "nombre": "Psicología",
+          "alias": [],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-05",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-06",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-07",
+          "nombre": "Facultad de Economía",
+          "alias": [
+            "economia"
+          ],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-08",
+          "nombre": "Facultad de Odontología",
+          "alias": [
+            "odontologia"
+          ],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-09",
+          "nombre": "Facultad de Medicina",
+          "alias": [
+            "medicina"
+          ],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-10",
+          "nombre": "Invernadero",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-11",
+          "nombre": "Anexo de Ingeniería",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-12",
+          "nombre": "Camino Verde",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R9-13",
+          "nombre": "Facultad de Contaduría y Administración",
+          "alias": [
+            "fca",
+            "contaduria",
+            "facultad de contaduria administracion"
+          ],
+          "lat": 19.3240291,
+          "lon": -99.1846238,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-14",
+          "nombre": "Escuela de Trabajo Social",
+          "alias": [
+            "trabajo social",
+            "ents"
+          ],
+          "lat": 19.323925,
+          "lon": -99.1867731,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R9-15",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "nombre": "Ruta 10",
+      "paradas": [
+        {
+          "id": "R10-00",
+          "nombre": "Metrobús CU-2",
+          "alias": [
+            "metrobus cu 2"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-01",
+          "nombre": "Campos de futbol I",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-02",
+          "nombre": "Jardín Botánico",
+          "alias": [],
+          "lat": 19.3196222,
+          "lon": -99.1935392,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-03",
+          "nombre": "Campos de futbol II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-04",
+          "nombre": "Investigaciones Biomédicas",
+          "alias": [],
+          "lat": 19.3232746,
+          "lon": -99.1913146,
+          "tiempo_al_siguiente_min": 5
+        },
+        {
+          "id": "R10-05",
+          "nombre": "Biblioteca Nacional 2",
+          "alias": [],
+          "lat": 19.3164235,
+          "lon": -99.1847864,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-06",
+          "nombre": "Zona Cultural",
+          "alias": [
+            "ccu",
+            "centro cultural universitario"
+          ],
+          "lat": 19.3151515,
+          "lon": -99.1875385,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R10-07",
+          "nombre": "Unidad de Posgrado",
+          "alias": [
+            "posgrado"
+          ],
+          "lat": 19.3097532,
+          "lon": -99.1852555,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-08",
+          "nombre": "Posgrado de Economía",
+          "alias": [],
+          "lat": 19.3110217,
+          "lon": -99.1860797,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-09",
+          "nombre": "DGIRE",
+          "alias": [
+            "dgire"
+          ],
+          "lat": 19.3109472,
+          "lon": -99.1849837,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-10",
+          "nombre": "DGAPA",
+          "alias": [
+            "dgapa"
+          ],
+          "lat": 19.3097689,
+          "lon": -99.1818274,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-11",
+          "nombre": "Archivo General",
+          "alias": [],
+          "lat": 19.3091414,
+          "lon": -99.1805564,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-12",
+          "nombre": "Avenida IMAN",
+          "alias": [
+            "av iman",
+            "iman"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-13",
+          "nombre": "Investigaciones Filosóficas",
+          "alias": [],
+          "lat": 19.3144149,
+          "lon": -99.18013,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-14",
+          "nombre": "Investigaciones Filológicas",
+          "alias": [],
+          "lat": 19.3145542,
+          "lon": -99.1807098,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-15",
+          "nombre": "Coordinación de Humanidades",
+          "alias": [
+            "humanidades"
+          ],
+          "lat": 19.3149527,
+          "lon": -99.1814699,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-16",
+          "nombre": "UNIVERSUM",
+          "alias": [
+            "museo de las ciencias"
+          ],
+          "lat": 19.3111465,
+          "lon": -99.1803998,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-17",
+          "nombre": "Teatro y Danza",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-18",
+          "nombre": "MUAC",
+          "alias": [
+            "museo universitario arte contemporaneo"
+          ],
+          "lat": 19.3147846,
+          "lon": -99.1854369,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-19",
+          "nombre": "Biblioteca Nacional",
+          "alias": [],
+          "lat": 19.3164235,
+          "lon": -99.1847864,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-20",
+          "nombre": "Espacio Escultórico",
+          "alias": [],
+          "lat": 19.3185488,
+          "lon": -99.1820447,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-21",
+          "nombre": "Investigaciones Jurídicas",
+          "alias": [
+            "ij"
+          ],
+          "lat": 19.3162824,
+          "lon": -99.1804068,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R10-22",
+          "nombre": "T.V. UNAM",
+          "alias": [
+            "tv unam"
+          ],
+          "lat": 19.3172493,
+          "lon": -99.1754608,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R10-23",
+          "nombre": "CUEC",
+          "alias": [
+            "cuec"
+          ],
+          "lat": 19.3187908,
+          "lon": -99.1755928,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-24",
+          "nombre": "DGSA",
+          "alias": [
+            "dgsa"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-25",
+          "nombre": "Tienda UNAM 2",
+          "alias": [],
+          "lat": 19.3209821,
+          "lon": -99.1755814,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-26",
+          "nombre": "Facultad de Ciencias Políticas",
+          "alias": [
+            "ciencias politicas",
+            "fcpys"
+          ],
+          "lat": 19.3186979,
+          "lon": -99.1781249,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-27",
+          "nombre": "Investigaciones Jurídicas 2",
+          "alias": [],
+          "lat": 19.3162824,
+          "lon": -99.1804068,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R10-28",
+          "nombre": "Metrobús CU-2",
+          "alias": [
+            "metrobus cu 2"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "nombre": "Ruta 11",
+      "paradas": [
+        {
+          "id": "R11-00",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-01",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-02",
+          "nombre": "MUCA",
+          "alias": [],
+          "lat": 19.3311362,
+          "lon": -99.1877231,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-03",
+          "nombre": "Estacionamiento 8",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-04",
+          "nombre": "Estacionamiento 7",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-05",
+          "nombre": "Relaciones Laborales",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-06",
+          "nombre": "Dirección General de Obras y Proveeduría",
+          "alias": [
+            "obras y proveeduria",
+            "dgop"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-07",
+          "nombre": "AAPAUNAM",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-08",
+          "nombre": "Edif. Anexo de la Facultad de Filosofía y Letras \"Adolfo Sánchez Vázquez\"",
+          "alias": [
+            "anexo de filosofia",
+            "enallt anexo filosofia"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-09",
+          "nombre": "Pista de calentamiento II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-10",
+          "nombre": "Pumitas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-11",
+          "nombre": "Jardín Botánico",
+          "alias": [],
+          "lat": 19.3196222,
+          "lon": -99.1935392,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-12",
+          "nombre": "Campos de futbol II",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R11-13",
+          "nombre": "Metrobús CU",
+          "alias": [
+            "metrobus cu"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R11-14",
+          "nombre": "Base Metrobús CU",
+          "alias": [
+            "base metrobus"
+          ],
+          "lat": 19.322911,
+          "lon": -99.1886088,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "nombre": "Ruta 12",
+      "paradas": [
+        {
+          "id": "R12-00",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R12-01",
+          "nombre": "Psicología",
+          "alias": [],
+          "lat": 19.3353312,
+          "lon": -99.1887418,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-02",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-03",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-04",
+          "nombre": "Facultad de Economía",
+          "alias": [
+            "economia"
+          ],
+          "lat": 19.3347881,
+          "lon": -99.183371,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-05",
+          "nombre": "Facultad de Odontología",
+          "alias": [
+            "odontologia"
+          ],
+          "lat": 19.3346638,
+          "lon": -99.1815434,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-06",
+          "nombre": "Facultad de Medicina",
+          "alias": [
+            "medicina fac"
+          ],
+          "lat": 19.333138,
+          "lon": -99.1801442,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-07",
+          "nombre": "Facultad de Química",
+          "alias": [
+            "quimica",
+            "fq"
+          ],
+          "lat": 19.3312565,
+          "lon": -99.1813352,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-08",
+          "nombre": "ENALLT Edif. A y B",
+          "alias": [
+            "cele",
+            "enallt",
+            "lenguas"
+          ],
+          "lat": 19.3315089,
+          "lon": -99.1833596,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R12-09",
+          "nombre": "Facultad de Ingeniería",
+          "alias": [
+            "ing",
+            "fi",
+            "ingenieria"
+          ],
+          "lat": 19.3316089,
+          "lon": -99.1846025,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-10",
+          "nombre": "Facultad de Arquitectura",
+          "alias": [
+            "arquitectura",
+            "fa"
+          ],
+          "lat": 19.3305957,
+          "lon": -99.1872913,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-11",
+          "nombre": "Estacionamiento 8",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-12",
+          "nombre": "Estacionamiento 7",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-13",
+          "nombre": "Relaciones Laborales",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-14",
+          "nombre": "Dirección General de Obras y Proveeduría",
+          "alias": [
+            "obras y proveeduria",
+            "dgop"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-15",
+          "nombre": "AAPAUNAM",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-16",
+          "nombre": "Edif. Anexo de la Facultad de Filosofía y Letras \"Adolfo Sánchez Vázquez\"",
+          "alias": [
+            "anexo de filosofia",
+            "enallt anexo filosofia"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-17",
+          "nombre": "Estacionamiento 6",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-18",
+          "nombre": "Estacionamiento 4",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-19",
+          "nombre": "Estacionamiento 3",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-20",
+          "nombre": "Estacionamiento 2",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R12-21",
+          "nombre": "Estadio Olímpico",
+          "alias": [
+            "estadio olimpico",
+            "base estadio olimpico"
+          ],
+          "lat": 19.3319056,
+          "lon": -99.1921777,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "nombre": "Ruta 13",
+      "paradas": [
+        {
+          "id": "R13-00",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": 1
+        },
+        {
+          "id": "R13-01",
+          "nombre": "Facultad de Derecho",
+          "alias": [
+            "derecho"
+          ],
+          "lat": 19.3345192,
+          "lon": -99.1850018,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-02",
+          "nombre": "Camino Verde",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-03",
+          "nombre": "Biblioteca Nacional 2",
+          "alias": [],
+          "lat": 19.3164235,
+          "lon": -99.1847864,
+          "tiempo_al_siguiente_min": 4
+        },
+        {
+          "id": "R13-04",
+          "nombre": "Unidad de Posgrado",
+          "alias": [
+            "posgrado"
+          ],
+          "lat": 19.3097532,
+          "lon": -99.1852555,
+          "tiempo_al_siguiente_min": 4
+        },
+        {
+          "id": "R13-05",
+          "nombre": "Coordinación de Humanidades",
+          "alias": [
+            "humanidades"
+          ],
+          "lat": 19.3149527,
+          "lon": -99.1814699,
+          "tiempo_al_siguiente_min": 3
+        },
+        {
+          "id": "R13-06",
+          "nombre": "Facultad de Ciencias Políticas",
+          "alias": [
+            "ciencias politicas",
+            "fcpys"
+          ],
+          "lat": 19.3186979,
+          "lon": -99.1781249,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-07",
+          "nombre": "Investigaciones Jurídicas 2",
+          "alias": [],
+          "lat": 19.3162824,
+          "lon": -99.1804068,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-08",
+          "nombre": "Metrobús CU-2",
+          "alias": [
+            "metrobus cu 2"
+          ],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-09",
+          "nombre": "Estadio de Prácticas",
+          "alias": [],
+          "lat": null,
+          "lon": null,
+          "tiempo_al_siguiente_min": 2
+        },
+        {
+          "id": "R13-10",
+          "nombre": "Facultad de Filosofía",
+          "alias": [
+            "filosofia",
+            "filos",
+            "ffyl"
+          ],
+          "lat": 19.3346779,
+          "lon": -99.1869471,
+          "tiempo_al_siguiente_min": null
+        }
+      ]
+    }
+  ]
+}
