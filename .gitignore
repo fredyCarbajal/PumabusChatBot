@@ -8,8 +8,10 @@ __pycache__/
 *$py.class
 *.so
 
-# Archivos de Windows/WSL
+# Archivos de Windows/WSL (CRÍTICO)
 *.Zone.Identifier
+*:Zone.Identifier
+:Zone.Identifier
 
 # Variables de entorno
 .env
@@ -18,10 +20,7 @@ __pycache__/
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# Archivos de sistema
+# Sistema
 .DS_Store
 Thumbs.db
-
