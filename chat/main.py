@@ -5,6 +5,8 @@ Bucle: lee input -> Fase 3 (interpretar intención) -> Fase 2 (calcular) -> impr
 
 import sys
 import os
+import re
+import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -47,13 +49,65 @@ def _respuesta_como_llegar(bd, nombre_origen, nombre_destino):
     return "\n".join(lineas)
 
 
-def responder(bd, intencion, entidades, contexto):
+def _parsear_hora_objetivo(texto_hora):
     """
-    contexto: dict compartido entre turnos (ver main()). Por ahora solo
-    guarda contexto["destino_pendiente"]: el nombre canónico del destino
-    cuando el bot preguntó "¿desde dónde partes?" y todavía no hay
-    respuesta. Es memoria de UNA sola pregunta pendiente, no historial
-    completo -- suficiente para "como llego a X" -> "desde Y".
+    Interpreta un texto de hora tipo "3", "3:00", "15:00", "3 pm" y regresa
+    el datetime FUTURO más cercano que corresponde (hoy si aún no pasa, o
+    mañana si ya pasó). Si no viene "am"/"pm", se prueban ambas lecturas de
+    12 horas y se elige la que quede más cerca en el futuro (ej. a las
+    14:00 alguien dice "a las 3" casi seguro quiere decir 3pm, no 3am que
+    ya pasó). Regresa None si no se pudo interpretar nada.
+    """
+    m = re.search(r"(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ampm>am|pm)?", texto_hora.strip().lower())
+    if not m:
+        return None
+    hora = int(m.group("h"))
+    minuto = int(m.group("m")) if m.group("m") else 0
+    if hora > 23 or minuto > 59:
+        return None
+    ampm = m.group("ampm")
+    ahora = datetime.datetime.now()
+
+    if ampm == "am":
+        candidatas_hora = [hora % 24]
+    elif ampm == "pm":
+        candidatas_hora = [(hora % 12) + 12]
+    else:
+        candidatas_hora = sorted({hora % 24, (hora % 12) + 12})
+
+    objetivos = []
+    for hh in candidatas_hora:
+        objetivo = ahora.replace(hour=hh, minute=minuto, second=0, microsecond=0)
+        if objetivo < ahora:
+            objetivo += datetime.timedelta(days=1)
+        objetivos.append((hh, objetivo))
+
+    if ampm is None and len(objetivos) > 1:
+        # Sin am/pm explícito y con dos lecturas posibles (ej. "3" ->
+        # 3am o 3pm): si SOLO una de las dos cae en horario típico de
+        # actividad escolar (6:00-22:00), se prefiere esa -- así "antes
+        # de las 3" a las 10pm se entiende como 3pm de mañana, no 3am
+        # (que sería la "más próxima" pero casi nunca lo que se quiso
+        # decir). Si ambas o ninguna caen en ese rango, se usa la más
+        # próxima en el tiempo, como antes.
+        en_horario_tipico = [(hh, obj) for hh, obj in objetivos if 6 <= hh <= 22]
+        if len(en_horario_tipico) == 1:
+            return en_horario_tipico[0][1]
+
+    return min((obj for _, obj in objetivos), key=lambda dt: dt - ahora)
+
+
+def responder(bd, intencion, entidades, contexto, texto_original=None):
+    """
+    contexto: dict compartido entre turnos (ver main()). Guarda:
+      - contexto["destino_pendiente"]: nombre canónico del destino cuando
+        el bot preguntó "¿desde dónde partes?" y todavía no hay respuesta.
+      - contexto["origen_recordado"]: nombre canónico del último origen
+        que SÍ se resolvió con éxito, para poder responder preguntas de
+        seguimiento tipo "¿y para X?" sin que el usuario repita de dónde
+        parte.
+    Es memoria de la última pregunta/origen, no un historial completo,
+    pero cubre los encadenamientos más comunes en una conversación.
     """
     if intencion == "saludo":
         return "¡Hola! 👋 Soy el chatbot de Pumabús. ¿En qué puedo ayudarte? Pregúntame sobre rutas, paradas o tiempos de viaje en CU."
@@ -74,7 +128,20 @@ def responder(bd, intencion, entidades, contexto):
             # Seguimos esperando el origen: NO se borra el contexto.
             return msg_o
         contexto["destino_pendiente"] = None
+        contexto["origen_recordado"] = nombre_origen
         return _respuesta_como_llegar(bd, nombre_origen, destino_pendiente)
+
+    if intencion == "y_tambien_a_X":
+        origen_recordado = contexto.get("origen_recordado")
+        if not origen_recordado:
+            return (
+                "No tengo un punto de partida guardado todavía. "
+                "Dime primero '¿cómo llego a X?' o 'de A a B'."
+            )
+        nombre_destino, msg_d = _resolver_o_aclarar(bd, entidades["destino"])
+        if msg_d:
+            return msg_d
+        return _respuesta_como_llegar(bd, origen_recordado, nombre_destino)
 
     if intencion == "tiempo_entre_A_y_B":
         a, b = entidades["a"], entidades["b"]
@@ -104,6 +171,7 @@ def responder(bd, intencion, entidades, contexto):
         if msg_d:
             return msg_d
         contexto["destino_pendiente"] = None
+        contexto["origen_recordado"] = nombre_origen
         return _respuesta_como_llegar(bd, nombre_origen, nombre_destino)
 
     if intencion == "como_llegar_a_X":
@@ -117,6 +185,92 @@ def responder(bd, intencion, entidades, contexto):
         return (
             f"Para llegar a {nombre_destino} dime desde dónde partes, por ejemplo: "
             f"'desde Metro Universidad'."
+        )
+
+    if intencion == "llegada_a_tiempo":
+        nombre_origen, msg_o = _resolver_o_aclarar(bd, entidades["origen"])
+        if msg_o:
+            return msg_o
+        nombre_destino, msg_d = _resolver_o_aclarar(bd, entidades["destino"])
+        if msg_d:
+            return msg_d
+        objetivo = _parsear_hora_objetivo(entidades["hora"])
+        if objetivo is None:
+            return "No entendí la hora. Dime algo como 'a las 3' o 'a las 15:00'."
+        resultado = mejor_ruta(bd, nombre_origen, nombre_destino)
+        if not resultado:
+            return f"No encontré una forma de ir de {nombre_origen} a {nombre_destino} con los datos actuales."
+        ahora = datetime.datetime.now()
+        llegada_estimada = ahora + datetime.timedelta(minutes=resultado["tiempo_total_min"])
+        if llegada_estimada <= objetivo:
+            return (
+                f"Sí llegas: de {nombre_origen} a {nombre_destino} son ~{resultado['tiempo_total_min']} min, "
+                f"llegarías como a las {llegada_estimada:%H:%M}, antes de las {objetivo:%H:%M}."
+            )
+        return (
+            f"No alcanzas: el trayecto tarda ~{resultado['tiempo_total_min']} min y llegarías "
+            f"como a las {llegada_estimada:%H:%M} -- después de las {objetivo:%H:%M}. Más vale que salgas antes."
+        )
+
+    if intencion == "comparar_rutas":
+        nombre_destino, msg_d = _resolver_o_aclarar(bd, entidades["destino"])
+        if msg_d:
+            return msg_d
+        nombre_via1, msg_1 = _resolver_o_aclarar(bd, entidades["via1"])
+        if msg_1:
+            return msg_1
+        nombre_via2, msg_2 = _resolver_o_aclarar(bd, entidades["via2"])
+        if msg_2:
+            return msg_2
+        resultado1 = mejor_ruta(bd, nombre_via1, nombre_destino)
+        resultado2 = mejor_ruta(bd, nombre_via2, nombre_destino)
+        if not resultado1 and not resultado2:
+            return f"No encontré cómo llegar a {nombre_destino} ni por {nombre_via1} ni por {nombre_via2}."
+        if not resultado1:
+            return f"No encontré ruta por {nombre_via1}, pero por {nombre_via2} tardarías ~{resultado2['tiempo_total_min']} min."
+        if not resultado2:
+            return f"No encontré ruta por {nombre_via2}, pero por {nombre_via1} tardarías ~{resultado1['tiempo_total_min']} min."
+        t1, t2 = resultado1["tiempo_total_min"], resultado2["tiempo_total_min"]
+        if t1 == t2:
+            return f"Tardan lo mismo: ~{t1} min tanto por {nombre_via1} como por {nombre_via2}."
+        mas_rapida, tiempo_rapida = (nombre_via1, t1) if t1 < t2 else (nombre_via2, t2)
+        mas_lenta, tiempo_lenta = (nombre_via2, t2) if t1 < t2 else (nombre_via1, t1)
+        return (
+            f"Es más rápido por {mas_rapida} (~{tiempo_rapida} min) que por {mas_lenta} (~{tiempo_lenta} min) "
+            f"para llegar a {nombre_destino}."
+        )
+
+    if intencion == "extremos_de_ruta_X":
+        texto_ruta = entidades["ruta"]
+        ruta_id = _extraer_numero_ruta(texto_ruta)
+        if ruta_id is None or ruta_id not in bd.rutas:
+            return f"No reconozco la ruta '{texto_ruta}'. Prueba con 'ruta 1', 'ruta 2', etc."
+        paradas = paradas_de_ruta(bd, ruta_id)
+        if not paradas:
+            return f"No tengo paradas cargadas para la Ruta {ruta_id}."
+        inicio, fin = paradas[0].nombre, paradas[-1].nombre
+        if inicio == fin:
+            return f"La Ruta {ruta_id} es un circuito: empieza y termina en {inicio}."
+        return f"La Ruta {ruta_id} empieza en {inicio} y termina en {fin}."
+
+    if intencion == "misma_ruta_dos_paradas":
+        nombre1, msg1 = _resolver_o_aclarar(bd, entidades["parada1"])
+        if msg1:
+            return msg1
+        nombre2, msg2 = _resolver_o_aclarar(bd, entidades["parada2"])
+        if msg2:
+            return msg2
+        ids1 = set(rutas_por_parada(bd, nombre1))
+        ids2 = set(rutas_por_parada(bd, nombre2))
+        comunes = sorted(ids1 & ids2)
+        if comunes:
+            rutas_txt = ", ".join(f"Ruta {r}" for r in comunes)
+            return f"Sí: {rutas_txt} pasan tanto por {nombre1} como por {nombre2}."
+        return (
+            f"No hay ninguna ruta directa que pase por ambas. "
+            f"{nombre1} la sirven " + (", ".join(f"Ruta {r}" for r in sorted(ids1)) or "ninguna ruta") + "; "
+            f"{nombre2} la sirven " + (", ".join(f"Ruta {r}" for r in sorted(ids2)) or "ninguna ruta") + ". "
+            f"Puedes hacer transbordo -- pregúntame '¿cómo llego de {nombre1} a {nombre2}?'"
         )
 
     if intencion == "ruta_de_X":
@@ -158,6 +312,21 @@ def responder(bd, intencion, entidades, contexto):
             "Escríbelas así: 'lat,lon' (ejemplo: 19.3302,-99.1836)."
         )
 
+    if intencion == "desconocida" and texto_original:
+        # Última red de seguridad: si lo único que escribió el usuario es
+        # el nombre de una parada que SÍ conocemos (ej. solo "medicina"),
+        # no le decimos "no entendí" -- le preguntamos qué quiere saber, y
+        # de paso dejamos guardado ese lugar como destino pendiente, para
+        # que si responde "desde X" ya sepamos a dónde se refería.
+        nombre, _ = bd.resolver_nombre_detallado(texto_original)
+        if nombre:
+            contexto["destino_pendiente"] = nombre
+            return (
+                f"Conozco '{nombre}'. ¿Qué quieres saber? Por ejemplo: "
+                f"'¿cómo llego ahí?', 'desde dónde partes' (solo dime 'desde X'), "
+                f"o '¿qué rutas pasan por ahí?'."
+            )
+
     return RESPUESTA_DEFECTO
 
 
@@ -198,7 +367,7 @@ def main():
     # Contexto de conversación: memoria de UNA sola pregunta pendiente
     # (el destino, cuando el bot preguntó "¿desde dónde partes?"). Vive
     # mientras dure la sesión de chat, se pasa por referencia a responder().
-    contexto = {"destino_pendiente": None}
+    contexto = {"destino_pendiente": None, "origen_recordado": None}
 
     while True:
         try:
@@ -225,7 +394,7 @@ def main():
             print("Pumabús-bot: ¡Hasta luego!")
             break
 
-        respuesta = responder(bd, resultado["intencion"], resultado["entidades"], contexto)
+        respuesta = responder(bd, resultado["intencion"], resultado["entidades"], contexto, texto_original=texto)
         print(f"Pumabús-bot: {respuesta}\n")
 
 
