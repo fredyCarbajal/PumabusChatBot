@@ -120,6 +120,18 @@ PATRONES_PARADA_CERCANA = [
     r"cual es la parada (?:mas|más) (?:cercana|cerca)",
 ]
 
+# Respuesta CORTA a "¿desde dónde partes?" -- el usuario ya no repite el
+# destino, solo dice de dónde sale. Esto SOLO tiene sentido si main.py
+# recuerda que había un destino pendiente (ver "contexto" en chat/main.py);
+# si no hay destino pendiente, se trata como si no se hubiera entendido.
+PATRONES_SOLO_ORIGEN = [
+    r"^desde (?P<origen>.+)$",
+    r"^partiendo de (?P<origen>.+)$",
+    r"^saliendo de (?P<origen>.+)$",
+    r"^(?:estoy|ando|me encuentro) en (?P<origen>.+)$",
+    r"^de (?P<origen>.+)$",
+]
+
 PATRONES_SALIDA = [
     r"^\s*sal(?:ir|te)?\b",
     r"^\s*adios\b",
@@ -161,6 +173,9 @@ def interpretar(texto_usuario):
       - "ruta_de_X"               -> entidades: {"ruta":...}
       - "que_rutas_por_X"          ← -> entidades: {"parada":...}
       - "parada_mas_cercana"      -> entidades: {"coords":...}
+      - "solo_origen"             ← -> entidades: {"origen":...} (respuesta
+        corta tipo "desde X"; solo tiene sentido si chat/main.py tenía un
+        destino pendiente guardado en su contexto de conversación)
       - "desconocida"             -> no hubo coincidencia (respuesta tipo ELIZA)
 
     Orden de verificación (prioridad):
@@ -171,9 +186,10 @@ def interpretar(texto_usuario):
     5. Ruta de X
     6. Qué rutas pasan por X / a qué hora pasa
     7. Parada más cercana
-    8. Saludo (simple)
-    9. Smalltalk
-    10. Desconocida
+    8. Solo origen ("desde X")
+    9. Saludo (simple)
+    10. Smalltalk
+    11. Desconocida
 
     Regresa un dict: {"intencion": str, "entidades": dict}
     """
@@ -224,6 +240,10 @@ def interpretar(texto_usuario):
     if m:
         coords = m.group("coords") if "coords" in m.groupdict() else None
         return {"intencion": "parada_mas_cercana", "entidades": {"coords": coords} if coords else {}}
+
+    m = _primer_match(PATRONES_SOLO_ORIGEN, texto)
+    if m:
+        return {"intencion": "solo_origen", "entidades": {"origen": m.group("origen").strip()}}
 
     if _primer_match(PATRONES_SALUDO, texto):
         return {"intencion": "saludo", "entidades": {}}
