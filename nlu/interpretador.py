@@ -6,6 +6,20 @@ Sin NLU basado en modelos: solo expresiones regulares y listas de alias
 
 import re
 
+# Emojis y símbolos decorativos comunes en mensajes informales (ej. "🚌❓
+# ing"). Se eliminan ANTES de aplicar los patrones, así "🚌❓ ing" queda
+# igual que "ing" para efectos de reconocimiento.
+_EMOJI_PATRON = re.compile(
+    "["
+    "\U0001F300-\U0001FAFF"
+    "\U00002600-\U000026FF"
+    "\U00002700-\U000027BF"
+    "\U0001F1E6-\U0001F1FF"
+    "\U00002B00-\U00002BFF"
+    "]+",
+    flags=re.UNICODE,
+)
+
 PATRONES_SALUDO = [
     r"^\s*hola\b",
     r"^\s*hey\b",
@@ -51,6 +65,7 @@ PATRONES_TIEMPO_ENTRE = [
     r"en cuanto (?:tiempo )?llego (?:de|desde) (?P<a>.+?) (?:a|hasta|hacia) (?P<b>.+)",
     r"que tan lejos (?:esta|queda) (?P<b>.+?) (?:de|desde) (?P<a>.+)",
     r"que tan retirado (?:esta|queda) (?P<b>.+?) (?:de|desde) (?P<a>.+)",
+    r"que tan cerca (?:esta|queda) (?P<b>.+?) (?:de|desde) (?P<a>.+)",
 ]
 
 
@@ -71,6 +86,10 @@ PATRONES_COMO_LLEGAR_CON_ORIGEN = [
     r"como puedo llegar de (?P<origen>.+?) a (?P<destino>.+)",
     r"(?:estoy|ando) en (?P<origen>.+?)\s+como (?:llego|voy) a (?P<destino>.+)",
     r"(?:necesito|debo) (?:ir|llegar) de (?P<origen>.+?) a (?P<destino>.+)",
+    r"cual es la ruta mas rapida de (?P<origen>.+?) a (?P<destino>.+)",
+    r"que (?:camion|combi) (?:tomo|agarro) de (?P<origen>.+?) a (?P<destino>.+)",
+    # Cambio de opinión: "no, mejor de X a Y"
+    r"no,? mejor de (?P<origen>.+?) a (?P<destino>.+)",
     r"^de (?P<origen>.+?) a (?P<destino>.+)$",
 ]
 
@@ -84,6 +103,14 @@ PATRONES_COMO_LLEGAR = [
     r"(?:necesito|quiero|debo|tengo que) (?:ir|llegar) a (?P<destino>.+)",
     # "Por dónde llego a X?"
     r"por donde (?:llego|voy|me voy) a (?P<destino>.+)",
+    # "¿Qué camión/combi me sirve/lleva a X?"
+    r"que (?:camion|combi|pumabus) (?:me lleva|me sirve|tomo|agarro) (?:para (?:ir|llegar) )?a (?P<destino>.+)",
+    # "¿Cuál es la ruta más rápida a X?"
+    r"cual es la ruta mas rapida a (?P<destino>.+)",
+    # "Por dónde me conviene ir a X"
+    r"por donde me conviene ir a (?P<destino>.+)",
+    # "Ando perdido, cómo llego a X"
+    r"ando perdido,? como llego a (?P<destino>.+)",
 ]
 
 PATRONES_RUTA_DE = [
@@ -92,8 +119,26 @@ PATRONES_RUTA_DE = [
     r"(?:por )?donde pasa (?:la )?(?:ruta )?(?P<ruta>\d+)",
     r"que paradas tiene (?:la )?(?:ruta )?(?P<ruta>\d+)",
     r"cuales son las paradas de (?:la )?(?:ruta )?(?P<ruta>\d+)",
-    r"recorrido de (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    # "recorrido de la ruta 1", "recorrido completo/total/detallado de la ruta 1"
+    r"recorrido(?:s)? (?:completo |total |detallado )?de (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    # variante genérica por si hay más palabras de relleno entre medio
+    r"recorrido.*?ruta\s*(?P<ruta>\d+)",
     r"cuales (?:son|pasa|tiene) (?:en )?(?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"informacion (?:de|sobre) (?:la )?ruta (?P<ruta>\d+)",
+    r"detalles? de (?:la )?ruta (?P<ruta>\d+)",
+    r"dime (?:el recorrido|las paradas) de (?:la )?ruta (?P<ruta>\d+)",
+]
+
+# "¿Cuál es la última parada de la ruta X?" / "¿Dónde termina/empieza la
+# ruta X?" -- responde con inicio Y fin de la ruta (más barato e informativo
+# que distinguir cuál de los dos preguntó exactamente).
+PATRONES_EXTREMOS_RUTA = [
+    r"(?:cual es la )?(?:ultima parada|parada final|terminal) de (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"donde (?:termina|acaba) (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"cual es (?:el )?(?:punto final|destino final) de (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"(?:cual es la )?primera parada de (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"donde (?:empieza|comienza|inicia) (?:la )?(?:ruta )?(?P<ruta>\d+)",
+    r"de donde sale (?:la )?(?:ruta )?(?P<ruta>\d+)",
 ]
 
 # "¿A qué hora pasa el puma/pumabús de X?", "¿qué ruta pasa por X?" -- no
@@ -108,6 +153,30 @@ PATRONES_QUE_RUTA_PASA = [
     r"a que hora (?:es|hay) (?:el|la|un) (?:puma|pumabus|camion|bus) (?:en|de|por) (?P<parada>.+)",
 ]
 
+# "¿Pasan por X y por Y la misma ruta?" / "¿hay alguna ruta que pase por X
+# y por Y?" -- responde si comparten al menos una ruta directa.
+PATRONES_MISMA_RUTA = [
+    r"(?:pasan|pasa) (?:por )?(?P<parada1>.+?) y (?:por )?(?P<parada2>.+?) (?:por )?la misma ruta",
+    r"(?:hay|existe) alguna ruta que pase por (?P<parada1>.+?) y (?:por )?(?P<parada2>.+)",
+    r"la (?:misma )?ruta (?:que )?pasa por (?P<parada1>.+?) y (?:por )?(?P<parada2>.+)",
+]
+
+# "¿Es más rápido llegar a X por A o por B?" -- compara el tiempo de
+# trayecto desde cada "vía" hasta el mismo destino.
+PATRONES_COMPARAR_RUTAS = [
+    r"es mas rapido (?:llegar a |ir a )?(?P<destino>.+?) por (?P<via1>.+?) o por (?P<via2>.+)",
+    r"que es mas rapido,? (?:ir )?por (?P<via1>.+?) o por (?P<via2>.+?) para llegar a (?P<destino>.+)",
+    r"conviene mas ir por (?P<via1>.+?) o por (?P<via2>.+?) (?:para llegar )?a (?P<destino>.+)",
+]
+
+# "Si salgo ahora de X, ¿llego a tiempo a Y (antes de/para) las 3?" --
+# combina la hora ACTUAL del sistema con el tiempo estimado del trayecto.
+PATRONES_LLEGADA_A_TIEMPO = [
+    r"si salgo(?: ahora| ahorita)? de (?P<origen>.+?),? (?:llego|alcanzo|logro llegar) a tiempo a (?P<destino>.+?) (?:antes de las|para las|a las)\s*(?P<hora>[\d: ]+(?:am|pm)?)",
+    r"si salgo(?: ahora| ahorita)? de (?P<origen>.+?),? (?:llego|alcanzo) a (?P<destino>.+?) (?:antes de las|para las|a las)\s*(?P<hora>[\d: ]+(?:am|pm)?)",
+    r"si me voy(?: ahora| ahorita)? de (?P<origen>.+?),? (?:llego|alcanzo) a (?P<destino>.+?) (?:antes de las|para las|a las)\s*(?P<hora>[\d: ]+(?:am|pm)?)",
+]
+
 PATRONES_PARADA_CERCANA = [
     r"parada\s+(?:mas|más)?\s*cercana\s+(?:de|en|a)?\s*(?P<coords>[\d\.\-]+\s*,\s*[\d\.\-]+)",
     r"que parada (?:es )?(?:la )?(?:mas|más) (?:cercana|cerca) (?:a|de|en)?\s*(?P<coords>[\d\.\-]+\s*,\s*[\d\.\-]+)",
@@ -118,6 +187,20 @@ PATRONES_PARADA_CERCANA = [
     r"parada\s+(?:mas|más)?\s*(?:cercana|cerca)",
     r"que parada me queda cerca",
     r"cual es la parada (?:mas|más) (?:cercana|cerca)",
+]
+
+# Pregunta de SEGUIMIENTO tipo "¿y para X?" / "¿y a X?" -- reutiliza el
+# ORIGEN de la pregunta anterior (ej. tras "de Derecho a Ciencias", el
+# usuario sigue con "¿y para Políticas?" queriendo decir "de Derecho a
+# Políticas"). Solo tiene sentido si main.py recordó un origen anterior.
+PATRONES_MISMO_ORIGEN_OTRO_DESTINO = [
+    r"^y (?:a|para|hacia|hasta) (?P<destino>.+)$",
+    r"^y (?:que tal|como llego) (?:a |para )(?P<destino>.+)$",
+    r"^oye,? y (?:a|para|hacia) (?P<destino>.+)$",
+    r"^tambien (?:quiero|necesito) ir a (?P<destino>.+)$",
+    # Cambio de opinión sin repetir el origen: "no, mejor a X"
+    r"^no,? mejor (?:a|hacia|para) (?P<destino>.+)$",
+    r"^no,? mejor (?:quiero ir|voy) a (?P<destino>.+)$",
 ]
 
 # Respuesta CORTA a "¿desde dónde partes?" -- el usuario ya no repite el
@@ -146,11 +229,14 @@ PATRONES_SALIDA = [
 ]
 
 def _normalizar(texto):
+    texto = _EMOJI_PATRON.sub(" ", texto)
     texto = texto.strip().lower()
     # quitar signos de interrogación/exclamación, no afectan al sentido
     texto = re.sub(r"[¿?¡!]", "", texto)
     reemplazos = str.maketrans("áéíóúñ", "aeioun")
-    return texto.translate(reemplazos)
+    texto = texto.translate(reemplazos)
+    # colapsar espacios que pudieron quedar dobles tras quitar emojis
+    return re.sub(r"\s+", " ", texto).strip()
 
 
 def _primer_match(patrones, texto):
@@ -176,6 +262,17 @@ def interpretar(texto_usuario):
       - "solo_origen"             ← -> entidades: {"origen":...} (respuesta
         corta tipo "desde X"; solo tiene sentido si chat/main.py tenía un
         destino pendiente guardado en su contexto de conversación)
+      - "y_tambien_a_X"           ← -> entidades: {"destino":...} (pregunta
+        de seguimiento tipo "¿y para X?" o cambio de opinión "no, mejor a
+        X"; reutiliza el ORIGEN recordado de la pregunta anterior)
+      - "llegada_a_tiempo"        ← -> entidades: {"origen","destino","hora"}
+        ("si salgo ahora de X, llego a tiempo a Y antes de las 3?")
+      - "comparar_rutas"          ← -> entidades: {"destino","via1","via2"}
+        ("¿es más rápido llegar a X por A o por B?")
+      - "extremos_de_ruta_X"      ← -> entidades: {"ruta":...} (inicio/fin
+        de una ruta: "¿dónde termina la ruta 1?", "primera parada de...")
+      - "misma_ruta_dos_paradas"  ← -> entidades: {"parada1","parada2"}
+        ("¿pasan por X y por Y la misma ruta?")
       - "desconocida"             -> no hubo coincidencia (respuesta tipo ELIZA)
 
     Orden de verificación (prioridad):
@@ -186,10 +283,11 @@ def interpretar(texto_usuario):
     5. Ruta de X
     6. Qué rutas pasan por X / a qué hora pasa
     7. Parada más cercana
-    8. Solo origen ("desde X")
-    9. Saludo (simple)
-    10. Smalltalk
-    11. Desconocida
+    8. Seguimiento ("y para X")
+    9. Solo origen ("desde X")
+    10. Saludo (simple)
+    11. Smalltalk
+    12. Desconocida
 
     Regresa un dict: {"intencion": str, "entidades": dict}
     """
@@ -222,11 +320,50 @@ def interpretar(texto_usuario):
             "entidades": {"destino": m.group("destino").strip()},
         }
 
+    m = _primer_match(PATRONES_LLEGADA_A_TIEMPO, texto)
+    if m:
+        return {
+            "intencion": "llegada_a_tiempo",
+            "entidades": {
+                "origen": m.group("origen").strip(),
+                "destino": m.group("destino").strip(),
+                "hora": m.group("hora").strip(),
+            },
+        }
+
+    m = _primer_match(PATRONES_COMPARAR_RUTAS, texto)
+    if m:
+        return {
+            "intencion": "comparar_rutas",
+            "entidades": {
+                "destino": m.group("destino").strip(),
+                "via1": m.group("via1").strip(),
+                "via2": m.group("via2").strip(),
+            },
+        }
+
+    m = _primer_match(PATRONES_EXTREMOS_RUTA, texto)
+    if m:
+        return {
+            "intencion": "extremos_de_ruta_X",
+            "entidades": {"ruta": m.group("ruta").strip()},
+        }
+
     m = _primer_match(PATRONES_RUTA_DE, texto)
     if m:
         return {
             "intencion": "ruta_de_X",
             "entidades": {"ruta": m.group("ruta").strip()},
+        }
+
+    m = _primer_match(PATRONES_MISMA_RUTA, texto)
+    if m:
+        return {
+            "intencion": "misma_ruta_dos_paradas",
+            "entidades": {
+                "parada1": m.group("parada1").strip(),
+                "parada2": m.group("parada2").strip(),
+            },
         }
 
     m = _primer_match(PATRONES_QUE_RUTA_PASA, texto)
@@ -240,6 +377,10 @@ def interpretar(texto_usuario):
     if m:
         coords = m.group("coords") if "coords" in m.groupdict() else None
         return {"intencion": "parada_mas_cercana", "entidades": {"coords": coords} if coords else {}}
+
+    m = _primer_match(PATRONES_MISMO_ORIGEN_OTRO_DESTINO, texto)
+    if m:
+        return {"intencion": "y_tambien_a_X", "entidades": {"destino": m.group("destino").strip()}}
 
     m = _primer_match(PATRONES_SOLO_ORIGEN, texto)
     if m:
