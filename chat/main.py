@@ -23,7 +23,38 @@ RESPUESTAS_SMALLTALK = (
 )
 
 
-def responder(bd, intencion, entidades):
+def _respuesta_como_llegar(bd, nombre_origen, nombre_destino):
+    """
+    Arma la respuesta de trayecto (ruta directa o combinada) entre dos
+    nombres YA resueltos (canónicos). Compartida entre "como_llegar_de_A_a_B"
+    y "solo_origen" (cuando se completa un destino pendiente del contexto).
+    """
+    resultado = mejor_ruta(bd, nombre_origen, nombre_destino)
+    if not resultado:
+        return f"No encontré una forma de ir de {nombre_origen} a {nombre_destino} con los datos actuales."
+
+    rutas_usadas = sorted({t["ruta_id"] for t in resultado["tramos"]})
+    if len(rutas_usadas) == 1:
+        lineas = [f"Toma la Ruta {rutas_usadas[0]} desde {nombre_origen} hasta {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
+        for i, parada in enumerate(resultado['paradas'], 1):
+            lineas.append(f"  {i}. {parada}")
+        return "\n".join(lineas)
+
+    # Múltiples rutas: mostrar cada tramo con su ruta
+    lineas = [f"De {nombre_origen} a {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
+    for tramo in resultado["tramos"]:
+        lineas.append(f"  • Ruta {tramo['ruta_id']}: {tramo['de']} → {tramo['a']} ({tramo['minutos']} min)")
+    return "\n".join(lineas)
+
+
+def responder(bd, intencion, entidades, contexto):
+    """
+    contexto: dict compartido entre turnos (ver main()). Por ahora solo
+    guarda contexto["destino_pendiente"]: el nombre canónico del destino
+    cuando el bot preguntó "¿desde dónde partes?" y todavía no hay
+    respuesta. Es memoria de UNA sola pregunta pendiente, no historial
+    completo -- suficiente para "como llego a X" -> "desde Y".
+    """
     if intencion == "saludo":
         return "¡Hola! 👋 Soy el chatbot de Pumabús. ¿En qué puedo ayudarte? Pregúntame sobre rutas, paradas o tiempos de viaje en CU."
 
@@ -32,6 +63,18 @@ def responder(bd, intencion, entidades):
         # redirigen hacia lo que el bot sí sabe hacer.
         import random
         return random.choice(RESPUESTAS_SMALLTALK)
+
+    if intencion == "solo_origen":
+        destino_pendiente = contexto.get("destino_pendiente")
+        if not destino_pendiente:
+            # No hay pregunta pendiente que completar: no adivinamos.
+            return RESPUESTA_DEFECTO
+        nombre_origen, msg_o = _resolver_o_aclarar(bd, entidades["origen"])
+        if msg_o:
+            # Seguimos esperando el origen: NO se borra el contexto.
+            return msg_o
+        contexto["destino_pendiente"] = None
+        return _respuesta_como_llegar(bd, nombre_origen, destino_pendiente)
 
     if intencion == "tiempo_entre_A_y_B":
         a, b = entidades["a"], entidades["b"]
@@ -60,31 +103,20 @@ def responder(bd, intencion, entidades):
         nombre_destino, msg_d = _resolver_o_aclarar(bd, destino)
         if msg_d:
             return msg_d
-        resultado = mejor_ruta(bd, nombre_origen, nombre_destino)
-        if not resultado:
-            return f"No encontré una forma de ir de {nombre_origen} a {nombre_destino} con los datos actuales."
-
-        rutas_usadas = sorted({t["ruta_id"] for t in resultado["tramos"]})
-        if len(rutas_usadas) == 1:
-            lineas = [f"Toma la Ruta {rutas_usadas[0]} desde {nombre_origen} hasta {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
-            for i, parada in enumerate(resultado['paradas'], 1):
-                lineas.append(f"  {i}. {parada}")
-            return "\n".join(lineas)
-
-        # Múltiples rutas: mostrar cada tramo con su ruta
-        lineas = [f"De {nombre_origen} a {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
-        for tramo in resultado["tramos"]:
-            lineas.append(f"  • Ruta {tramo['ruta_id']}: {tramo['de']} → {tramo['a']} ({tramo['minutos']} min)")
-        return "\n".join(lineas)
+        contexto["destino_pendiente"] = None
+        return _respuesta_como_llegar(bd, nombre_origen, nombre_destino)
 
     if intencion == "como_llegar_a_X":
         destino = entidades["destino"]
         nombre_destino, msg_d = _resolver_o_aclarar(bd, destino)
         if msg_d:
             return msg_d
+        # Se guarda el destino para poder completarlo si el usuario
+        # responde solo con "desde X" en el siguiente turno.
+        contexto["destino_pendiente"] = nombre_destino
         return (
             f"Para llegar a {nombre_destino} dime desde dónde partes, por ejemplo: "
-            f"'¿cómo llego a {nombre_destino} desde Metro Universidad?'"
+            f"'desde Metro Universidad'."
         )
 
     if intencion == "ruta_de_X":
@@ -163,6 +195,11 @@ def main():
         print(f"Error al cargar la base de conocimiento: {e}")
         return
 
+    # Contexto de conversación: memoria de UNA sola pregunta pendiente
+    # (el destino, cuando el bot preguntó "¿desde dónde partes?"). Vive
+    # mientras dure la sesión de chat, se pasa por referencia a responder().
+    contexto = {"destino_pendiente": None}
+
     while True:
         try:
             texto = input("Tú: ").strip()
@@ -188,7 +225,7 @@ def main():
             print("Pumabús-bot: ¡Hasta luego!")
             break
 
-        respuesta = responder(bd, resultado["intencion"], resultado["entidades"])
+        respuesta = responder(bd, resultado["intencion"], resultado["entidades"], contexto)
         print(f"Pumabús-bot: {respuesta}\n")
 
 
