@@ -8,6 +8,19 @@ import json
 import os
 import re
 
+# Tolerancia a errores de dedo / variantes fonéticas (ej. "polakas" en vez
+# de "polacas"). rapidfuzz es OPCIONAL: si no está instalado, el bot sigue
+# funcionando exactamente igual que antes, solo sin esta ayuda extra.
+try:
+    from rapidfuzz import process, fuzz
+    _RAPIDFUZZ_DISPONIBLE = True
+except ImportError:
+    _RAPIDFUZZ_DISPONIBLE = False
+
+# Qué tan parecido debe ser un texto a un alias conocido para aceptarlo
+# como coincidencia "por error de dedo" (0-100). Más alto = más estricto.
+_UMBRAL_FUZZY = 80
+
 RUTA_JSON_POR_DEFECTO = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "datos",
@@ -108,7 +121,7 @@ class BaseDeConocimiento:
 
         if len(mejores_nombres) == 1:
             return mejores_nombres[0], []
-        
+
         # Si hay ambigüedad (múltiples nombres con igual especificidad de alias),
         # elegir automáticamente el nombre más LARGO (más específico).
         nombre_mas_largo = max(mejores_nombres, key=len)
@@ -121,6 +134,10 @@ class BaseDeConocimiento:
         texto. Coincidencia de palabra completa, no substring, para evitar
         falsos positivos como el alias corto "fa" (Facultad de Arquitectura)
         apareciendo dentro de la palabra "facultad".
+
+        Si no hay ningún match exacto/por palabra, se intenta un último
+        recurso "fuzzy" (tolerante a errores de dedo, ej. "polakas" en vez
+        de "polacas") usando rapidfuzz, SI está instalado.
         """
         clave = _normalizar(texto)
         if clave in self.alias_a_nombre:
@@ -132,7 +149,48 @@ class BaseDeConocimiento:
             if re.search(patron, clave):
                 for nombre_canonico in nombres:
                     candidatos.append((nombre_canonico, len(alias_norm)))
+
+        if not candidatos:
+            candidatos = self._buscar_candidatos_fuzzy(clave)
+
         return candidatos
+
+    def _buscar_candidatos_fuzzy(self, clave):
+        """
+        Último recurso: compara `clave` (texto completo del usuario, ya
+        normalizado) contra cada alias conocido usando similitud de texto,
+        no coincidencia exacta. Perdona errores de dedo y variantes
+        fonéticas comunes (ej. "polakas" -> "polacas", "recotria" ->
+        "rectoria"). Solo se usa cuando NO hubo ningún match normal, y solo
+        si rapidfuzz está instalado (si no, regresa lista vacía y el bot
+        se comporta igual que antes).
+        """
+        if not _RAPIDFUZZ_DISPONIBLE or not clave:
+            return []
+
+        # Si el usuario escribió una frase larga (varias palabras) en vez de
+        # solo el nombre de un lugar, comparar palabra por palabra en vez de
+        # la frase completa, porque comparar una frase larga contra un alias
+        # corto casi siempre da una similitud baja y poco confiable.
+        palabras = clave.split()
+        textos_a_probar = [clave] + palabras if len(palabras) > 1 else [clave]
+
+        mejor_resultado = None  # (alias_norm, score)
+        for texto_candidato in textos_a_probar:
+            resultado = process.extractOne(
+                texto_candidato,
+                self.alias_a_nombre.keys(),
+                scorer=fuzz.ratio,
+                score_cutoff=_UMBRAL_FUZZY,
+            )
+            if resultado and (mejor_resultado is None or resultado[1] > mejor_resultado[1]):
+                mejor_resultado = resultado
+
+        if mejor_resultado is None:
+            return []
+
+        alias_encontrado, _score, _idx = mejor_resultado
+        return [(nombre, len(alias_encontrado)) for nombre in self.alias_a_nombre[alias_encontrado]]
 
 
 def _normalizar(texto):
@@ -191,5 +249,5 @@ if __name__ == "__main__":
         for p in ruta.paradas:
             print(f"    - {p.orden}: {p.nombre} (alias: {p.alias})")
     print("\nPrueba de resolución de alias:")
-    for texto in ["ing", "metro u", "rectoria", "algo que no existe"]:
+    for texto in ["ing", "metro u", "rectoria", "polakas", "algo que no existe"]:
         print(f"  '{texto}' -> {bd.resolver_nombre(texto)}")
