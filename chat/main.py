@@ -9,13 +9,29 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.cargar_datos import cargar_datos
-from core.nucleo import tiempo_entre_paradas, mejor_ruta, parada_mas_cercana, paradas_de_ruta
+from core.nucleo import tiempo_entre_paradas, mejor_ruta, parada_mas_cercana, paradas_de_ruta, rutas_por_parada
 from nlu.interpretador import interpretar, RESPUESTA_DEFECTO
+
+
+RESPUESTAS_SMALLTALK = (
+    "Jaja, yo solo sé de rutas y paradas del Pumabús en CU 🚌 pero con gusto te ayudo. "
+    "Prueba con algo como '¿cómo llego a Medicina?' o 'estoy en Ingeniería, cómo llego a Rectoría'.",
+    "Soy el chatbot de Pumabús, no tengo mucho que contar de mí, pero sí de rutas: "
+    "pregúntame por ejemplo '¿qué ruta pasa por Ciencias Políticas?'.",
+    "Puedo ayudarte con: cómo llegar de un lugar a otro, cuánto tarda un trayecto, "
+    "qué paradas tiene una ruta, o qué ruta pasa por cierta parada. ¿Qué necesitas?",
+)
 
 
 def responder(bd, intencion, entidades):
     if intencion == "saludo":
         return "¡Hola! 👋 Soy el chatbot de Pumabús. ¿En qué puedo ayudarte? Pregúntame sobre rutas, paradas o tiempos de viaje en CU."
+
+    if intencion == "smalltalk":
+        # Sin IA generativa: solo un pool fijo de respuestas amables que
+        # redirigen hacia lo que el bot sí sabe hacer.
+        import random
+        return random.choice(RESPUESTAS_SMALLTALK)
 
     if intencion == "tiempo_entre_A_y_B":
         a, b = entidades["a"], entidades["b"]
@@ -47,14 +63,14 @@ def responder(bd, intencion, entidades):
         resultado = mejor_ruta(bd, nombre_origen, nombre_destino)
         if not resultado:
             return f"No encontré una forma de ir de {nombre_origen} a {nombre_destino} con los datos actuales."
-        
+
         rutas_usadas = sorted({t["ruta_id"] for t in resultado["tramos"]})
         if len(rutas_usadas) == 1:
             lineas = [f"Toma la Ruta {rutas_usadas[0]} desde {nombre_origen} hasta {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
             for i, parada in enumerate(resultado['paradas'], 1):
                 lineas.append(f"  {i}. {parada}")
             return "\n".join(lineas)
-        
+
         # Múltiples rutas: mostrar cada tramo con su ruta
         lineas = [f"De {nombre_origen} a {nombre_destino} (~{resultado['tiempo_total_min']} min):"]
         for tramo in resultado["tramos"]:
@@ -79,6 +95,20 @@ def responder(bd, intencion, entidades):
         paradas = paradas_de_ruta(bd, ruta_id)
         nombres = " -> ".join(p.nombre for p in paradas)
         return f"La Ruta {ruta_id} pasa por: {nombres}."
+
+    if intencion == "que_rutas_por_X":
+        texto_parada = entidades["parada"]
+        nombre, msg = _resolver_o_aclarar(bd, texto_parada)
+        if msg:
+            return msg
+        ids = rutas_por_parada(bd, nombre)
+        if not ids:
+            return f"No encontré ninguna ruta que pase por '{nombre}'."
+        rutas_txt = ", ".join(f"Ruta {r}" for r in ids)
+        return (
+            f"Por {nombre} pasan: {rutas_txt}. "
+            f"No tengo horarios exactos cronometrados todavía, pero esas son las rutas que puedes esperar ahí."
+        )
 
     if intencion == "parada_mas_cercana":
         coords = entidades.get("coords")
