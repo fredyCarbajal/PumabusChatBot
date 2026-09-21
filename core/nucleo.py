@@ -17,6 +17,22 @@ def paradas_de_ruta(bd, ruta_id):
     return ruta.paradas if ruta else []
 
 
+def rutas_por_parada(bd, nombre):
+    """
+    Regresa la lista ordenada (por id) de ids de ruta que pasan por la
+    parada con ese nombre canónico. [] si el nombre no existe en ninguna
+    ruta.
+    """
+    clave = _normalizar(nombre)
+    ids = set()
+    for ruta in bd.rutas.values():
+        for parada in ruta.paradas:
+            if _normalizar(parada.nombre) == clave:
+                ids.add(ruta.id)
+                break
+    return sorted(ids)
+
+
 def tiempo_entre_paradas(bd, nombre_a, nombre_b):
     """
     Suma de tramos entre dos paradas SI están en la misma ruta Y en el
