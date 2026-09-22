@@ -1,5 +1,5 @@
 {
-  "_nota": "Coordenadas reales (Google Places) cargadas para ~48 lugares principales (facultades, institutos, museos, etc.); estacionamientos, pistas, accesos y algunos nodos internos siguen en null (no tienen entrada propia en Google Maps). Los tiempos entre paradas se MODELARON con distancia Haversine / 12 km/h (velocidad promedio estimada dentro de CU, no medida) para los tramos donde ambos extremos ya tienen coordenadas; donde falta alguna coordenada se conserva el placeholder de 2 min. Esto es mejor que el placeholder uniforme pero SIGUE SIN SER un tiempo medido: falta cronometrar tramos reales para la entrega final.",
+  "_nota": "Coordenadas reales cargadas para 48 lugares principales (facultades, institutos, museos, etc.); estacionamientos, pistas, accesos y algunos nodos internos siguen en null. Los tiempos entre paradas se modelaron con distancia Haversine / 12 km/h (velocidad promedio estimada dentro de CU, no medida) para los tramos donde ambos extremos ya tienen coordenadas; donde falta alguna coordenada se conserva el placeholder de 2 min.",
   "rutas": [
     {
       "id": 1,
