@@ -1,5 +1,5 @@
 {
-  "_nota": "Catálogo de nombres de parada leídos del mapa integral oficial de Pumabús. NO incluye orden por ruta (eso requiere los mapas individuales R1-R13) ni coordenadas ni tiempos. Usar como referencia para no reescribir nombres/alias al llenar rutas.json.",
+  "_nota": "Catálogo de nombres de parada leídos del mapa integral oficial de Pumabús. NO incluye orden por ruta ni coordenadas ni tiempos. Se usa como referencia al llenar rutas.json.",
   "paradas_conocidas": [
     { "nombre": "AAPAUNAM", "alias": [] },
     { "nombre": "Dirección General de Obras y Proveeduría", "alias": ["obras y proveeduria"] },
