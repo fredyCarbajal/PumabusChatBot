@@ -16,7 +16,7 @@ from nlu.interpretador import interpretar, RESPUESTA_DEFECTO
 
 
 RESPUESTAS_SMALLTALK = (
-    "Jaja, yo solo sé de rutas y paradas del Pumabús en CU 🚌 pero con gusto te ayudo. "
+    "Jaja, yo solo sé de rutas y paradas del Pumabús en CU pero con gusto te ayudo. "
     "Prueba con algo como '¿cómo llego a Medicina?' o 'estoy en Ingeniería, cómo llego a Rectoría'.",
     "Soy el chatbot de Pumabús, no tengo mucho que contar de mí, pero sí de rutas: "
     "pregúntame por ejemplo '¿qué ruta pasa por Ciencias Políticas?'.",
@@ -83,13 +83,6 @@ def _parsear_hora_objetivo(texto_hora):
         objetivos.append((hh, objetivo))
 
     if ampm is None and len(objetivos) > 1:
-        # Sin am/pm explícito y con dos lecturas posibles (ej. "3" ->
-        # 3am o 3pm): si SOLO una de las dos cae en horario típico de
-        # actividad escolar (6:00-22:00), se prefiere esa -- así "antes
-        # de las 3" a las 10pm se entiende como 3pm de mañana, no 3am
-        # (que sería la "más próxima" pero casi nunca lo que se quiso
-        # decir). Si ambas o ninguna caen en ese rango, se usa la más
-        # próxima en el tiempo, como antes.
         en_horario_tipico = [(hh, obj) for hh, obj in objetivos if 6 <= hh <= 22]
         if len(en_horario_tipico) == 1:
             return en_horario_tipico[0][1]
@@ -113,19 +106,15 @@ def responder(bd, intencion, entidades, contexto, texto_original=None):
         return "¡Hola! 👋 Soy el chatbot de Pumabús. ¿En qué puedo ayudarte? Pregúntame sobre rutas, paradas o tiempos de viaje en CU."
 
     if intencion == "smalltalk":
-        # Sin IA generativa: solo un pool fijo de respuestas amables que
-        # redirigen hacia lo que el bot sí sabe hacer.
         import random
         return random.choice(RESPUESTAS_SMALLTALK)
 
     if intencion == "solo_origen":
         destino_pendiente = contexto.get("destino_pendiente")
         if not destino_pendiente:
-            # No hay pregunta pendiente que completar: no adivinamos.
             return RESPUESTA_DEFECTO
         nombre_origen, msg_o = _resolver_o_aclarar(bd, entidades["origen"])
         if msg_o:
-            # Seguimos esperando el origen: NO se borra el contexto.
             return msg_o
         contexto["destino_pendiente"] = None
         contexto["origen_recordado"] = nombre_origen
@@ -313,11 +302,6 @@ def responder(bd, intencion, entidades, contexto, texto_original=None):
         )
 
     if intencion == "desconocida" and texto_original:
-        # Última red de seguridad: si lo único que escribió el usuario es
-        # el nombre de una parada que SÍ conocemos (ej. solo "medicina"),
-        # no le decimos "no entendí" -- le preguntamos qué quiere saber, y
-        # de paso dejamos guardado ese lugar como destino pendiente, para
-        # que si responde "desde X" ya sepamos a dónde se refería.
         nombre, _ = bd.resolver_nombre_detallado(texto_original)
         if nombre:
             contexto["destino_pendiente"] = nombre
@@ -364,9 +348,6 @@ def main():
         print(f"Error al cargar la base de conocimiento: {e}")
         return
 
-    # Contexto de conversación: memoria de UNA sola pregunta pendiente
-    # (el destino, cuando el bot preguntó "¿desde dónde partes?"). Vive
-    # mientras dure la sesión de chat, se pasa por referencia a responder().
     contexto = {"destino_pendiente": None, "origen_recordado": None}
 
     while True:
@@ -379,7 +360,7 @@ def main():
         if not texto:
             continue
 
-        # atajo: coordenadas directas para parada más cercana
+        # coordenadas directas para parada más cercana
         if "," in texto and all(_es_numero(p) for p in texto.split(",", 1)):
             lat_str, lon_str = texto.split(",", 1)
             parada, dist = parada_mas_cercana(bd, float(lat_str), float(lon_str))
