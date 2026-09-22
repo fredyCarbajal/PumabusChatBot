@@ -1,14 +1,11 @@
 """
-Fase 3 - Interpretación de preguntas mediante reglas (estilo ELIZA).
-Sin NLU basado en modelos: solo expresiones regulares y listas de alias
+Fase 3 - Interpretación de preguntas mediante reglas.
+Solo expresiones regulares y listas de alias
 (estas últimas ya cargadas en la BaseDeConocimiento desde datos/rutas.json).
 """
 
 import re
 
-# Emojis y símbolos decorativos comunes en mensajes informales (ej. "🚌❓
-# ing"). Se eliminan ANTES de aplicar los patrones, así "🚌❓ ing" queda
-# igual que "ing" para efectos de reconocimiento.
 _EMOJI_PATRON = re.compile(
     "["
     "\U0001F300-\U0001FAFF"
@@ -32,9 +29,7 @@ PATRONES_SALUDO = [
     r"^\s*saludos\b",
 ]
 
-# Charla casual que no pide información de ruta, pero merece una respuesta
-# amable en vez de "no entendí" (no todo lo que no matchea nada más es un
-# error del usuario; a veces solo está platicando).
+# Charla casual 
 PATRONES_SMALLTALK = [
     r"como\s+(?:estas|andas|te va|vas|te encuentras)\b",
     r"que\s+tal\b",
@@ -70,7 +65,7 @@ PATRONES_TIEMPO_ENTRE = [
 
 
 PATRONES_COMO_LLEGAR_CON_ORIGEN = [
-    # ORDEN INVERTIDO (van primero, más específicos)
+    # ORDEN INVERTIDO
     r"como (?:llego|voy|puedo (?:ir|llegar)) a (?P<destino>.+?) (?:si )?estoy en (?P<origen>.+)",
     r"como (?:llego|voy|puedo ir) a (?P<destino>.+?) (?:desde|de) (?P<origen>.+)",
     r"(?:para|a|hacia) (?P<destino>.+?) (?:saliendo|partiendo) de (?P<origen>.+)",
@@ -93,7 +88,7 @@ PATRONES_COMO_LLEGAR_CON_ORIGEN = [
     r"^de (?P<origen>.+?) a (?P<destino>.+)$",
 ]
 
-# Solo destino (se asume que el bot debe preguntar el origen).
+# Solo destino
 PATRONES_COMO_LLEGAR = [
     # "¿Cómo llego a X?"
     r"como (?:llego|voy|puedo ir|me voy|le hago para llegar) a (?P<destino>.+)",
@@ -129,9 +124,7 @@ PATRONES_RUTA_DE = [
     r"dime (?:el recorrido|las paradas) de (?:la )?ruta (?P<ruta>\d+)",
 ]
 
-# "¿Cuál es la última parada de la ruta X?" / "¿Dónde termina/empieza la
-# ruta X?" -- responde con inicio Y fin de la ruta (más barato e informativo
-# que distinguir cuál de los dos preguntó exactamente).
+# "¿Cuál es la última parada de la ruta X?"
 PATRONES_EXTREMOS_RUTA = [
     r"(?:cual es la )?(?:ultima parada|parada final|terminal) de (?:la )?(?:ruta )?(?P<ruta>\d+)",
     r"donde (?:termina|acaba) (?:la )?(?:ruta )?(?P<ruta>\d+)",
@@ -141,9 +134,7 @@ PATRONES_EXTREMOS_RUTA = [
     r"de donde sale (?:la )?(?:ruta )?(?P<ruta>\d+)",
 ]
 
-# "¿A qué hora pasa el puma/pumabús de X?", "¿qué ruta pasa por X?" -- no
-# tenemos horarios reales cronometrados, pero sí podemos decir qué rutas
-# sirven esa parada (el bot lo aclara en la respuesta).
+# "¿A qué hora pasa el puma/pumabús de X?", "¿qué ruta pasa por X?"
 PATRONES_QUE_RUTA_PASA = [
     r"a que hora (?:pasa|llega|sale) (?:el|la) (?:puma|pumabus|camion|bus|combi)(?:\s+de)? (?P<parada>.+)",
     r"cuando (?:pasa|llega) (?:el|la) (?:puma|pumabus|camion|bus) (?:de|en|por) (?P<parada>.+)",
@@ -153,24 +144,21 @@ PATRONES_QUE_RUTA_PASA = [
     r"a que hora (?:es|hay) (?:el|la|un) (?:puma|pumabus|camion|bus) (?:en|de|por) (?P<parada>.+)",
 ]
 
-# "¿Pasan por X y por Y la misma ruta?" / "¿hay alguna ruta que pase por X
-# y por Y?" -- responde si comparten al menos una ruta directa.
+# "¿Pasan por X y por Y la misma ruta?"
 PATRONES_MISMA_RUTA = [
     r"(?:pasan|pasa) (?:por )?(?P<parada1>.+?) y (?:por )?(?P<parada2>.+?) (?:por )?la misma ruta",
     r"(?:hay|existe) alguna ruta que pase por (?P<parada1>.+?) y (?:por )?(?P<parada2>.+)",
     r"la (?:misma )?ruta (?:que )?pasa por (?P<parada1>.+?) y (?:por )?(?P<parada2>.+)",
 ]
 
-# "¿Es más rápido llegar a X por A o por B?" -- compara el tiempo de
-# trayecto desde cada "vía" hasta el mismo destino.
+# "¿Es más rápido llegar a X por A o por B?" 
 PATRONES_COMPARAR_RUTAS = [
     r"es mas rapido (?:llegar a |ir a )?(?P<destino>.+?) por (?P<via1>.+?) o por (?P<via2>.+)",
     r"que es mas rapido,? (?:ir )?por (?P<via1>.+?) o por (?P<via2>.+?) para llegar a (?P<destino>.+)",
     r"conviene mas ir por (?P<via1>.+?) o por (?P<via2>.+?) (?:para llegar )?a (?P<destino>.+)",
 ]
 
-# "Si salgo ahora de X, ¿llego a tiempo a Y (antes de/para) las 3?" --
-# combina la hora ACTUAL del sistema con el tiempo estimado del trayecto.
+# "Si salgo ahora de X, ¿llego a tiempo a Y (antes de/para) las 3?"
 PATRONES_LLEGADA_A_TIEMPO = [
     r"si salgo(?: ahora| ahorita)? de (?P<origen>.+?),? (?:llego|alcanzo|logro llegar) a tiempo a (?P<destino>.+?) (?:antes de las|para las|a las)\s*(?P<hora>[\d: ]+(?:am|pm)?)",
     r"si salgo(?: ahora| ahorita)? de (?P<origen>.+?),? (?:llego|alcanzo) a (?P<destino>.+?) (?:antes de las|para las|a las)\s*(?P<hora>[\d: ]+(?:am|pm)?)",
@@ -189,10 +177,7 @@ PATRONES_PARADA_CERCANA = [
     r"cual es la parada (?:mas|más) (?:cercana|cerca)",
 ]
 
-# Pregunta de SEGUIMIENTO tipo "¿y para X?" / "¿y a X?" -- reutiliza el
-# ORIGEN de la pregunta anterior (ej. tras "de Derecho a Ciencias", el
-# usuario sigue con "¿y para Políticas?" queriendo decir "de Derecho a
-# Políticas"). Solo tiene sentido si main.py recordó un origen anterior.
+# Pregunta de SEGUIMIENTO tipo "¿y para X?" / "¿y a X?" 
 PATRONES_MISMO_ORIGEN_OTRO_DESTINO = [
     r"^y (?:a|para|hacia|hasta) (?P<destino>.+)$",
     r"^y (?:que tal|como llego) (?:a |para )(?P<destino>.+)$",
@@ -203,10 +188,7 @@ PATRONES_MISMO_ORIGEN_OTRO_DESTINO = [
     r"^no,? mejor (?:quiero ir|voy) a (?P<destino>.+)$",
 ]
 
-# Respuesta CORTA a "¿desde dónde partes?" -- el usuario ya no repite el
-# destino, solo dice de dónde sale. Esto SOLO tiene sentido si main.py
-# recuerda que había un destino pendiente (ver "contexto" en chat/main.py);
-# si no hay destino pendiente, se trata como si no se hubiera entendido.
+# Respuesta CORTA a "¿desde dónde partes?" 
 PATRONES_SOLO_ORIGEN = [
     r"^desde (?P<origen>.+)$",
     r"^partiendo de (?P<origen>.+)$",
@@ -231,7 +213,7 @@ PATRONES_SALIDA = [
 def _normalizar(texto):
     texto = _EMOJI_PATRON.sub(" ", texto)
     texto = texto.strip().lower()
-    # quitar signos de interrogación/exclamación, no afectan al sentido
+    # quitar signos de interrogación o exclamación, no afectan al sentido
     texto = re.sub(r"[¿?¡!]", "", texto)
     reemplazos = str.maketrans("áéíóúñ", "aeioun")
     texto = texto.translate(reemplazos)
