@@ -1,16 +1,13 @@
 """
 Fase 1 - Carga de la base de conocimiento (datos/rutas.json) a estructuras
-en memoria. No usa ningún motor de base de datos externo ni IA: es lectura
-directa de JSON con json de la librería estándar de Python.
+en memoria. Lectura directa de JSON con json de la librería estándar de Python.
 """
 
 import json
 import os
 import re
 
-# Tolerancia a errores de dedo / variantes fonéticas (ej. "polakas" en vez
-# de "polacas"). rapidfuzz es OPCIONAL: si no está instalado, el bot sigue
-# funcionando exactamente igual que antes, solo sin esta ayuda extra.
+# Tolerancia a errores de dedo 
 try:
     from rapidfuzz import process, fuzz
     _RAPIDFUZZ_DISPONIBLE = True
@@ -18,7 +15,6 @@ except ImportError:
     _RAPIDFUZZ_DISPONIBLE = False
 
 # Qué tan parecido debe ser un texto a un alias conocido para aceptarlo
-# como coincidencia "por error de dedo" (0-100). Más alto = más estricto.
 _UMBRAL_FUZZY = 80
 
 RUTA_JSON_POR_DEFECTO = os.path.join(
@@ -39,7 +35,7 @@ class Parada:
         self.lon = lon
         self.tiempo_al_siguiente_min = tiempo_al_siguiente_min
         self.ruta_id = ruta_id
-        self.orden = orden  # posición (0-indexada) dentro de la ruta
+        self.orden = orden  
 
     def __repr__(self):
         return f"Parada({self.id!r}, {self.nombre!r}, ruta={self.ruta_id})"
@@ -122,23 +118,10 @@ class BaseDeConocimiento:
         if len(mejores_nombres) == 1:
             return mejores_nombres[0], []
 
-        # Si hay ambigüedad (múltiples nombres con igual especificidad de alias),
-        # elegir automáticamente el nombre más LARGO (más específico).
         nombre_mas_largo = max(mejores_nombres, key=len)
         return nombre_mas_largo, []
 
     def _buscar_candidatos(self, texto):
-        """
-        Lista de (nombre_canonico, largo_del_alias_que_hizo_match) para todo
-        alias/nombre que aparezca como PALABRA COMPLETA (con \\b) dentro del
-        texto. Coincidencia de palabra completa, no substring, para evitar
-        falsos positivos como el alias corto "fa" (Facultad de Arquitectura)
-        apareciendo dentro de la palabra "facultad".
-
-        Si no hay ningún match exacto/por palabra, se intenta un último
-        recurso "fuzzy" (tolerante a errores de dedo, ej. "polakas" en vez
-        de "polacas") usando rapidfuzz, SI está instalado.
-        """
         clave = _normalizar(texto)
         if clave in self.alias_a_nombre:
             return [(nombre, len(clave)) for nombre in self.alias_a_nombre[clave]]
@@ -156,22 +139,8 @@ class BaseDeConocimiento:
         return candidatos
 
     def _buscar_candidatos_fuzzy(self, clave):
-        """
-        Último recurso: compara `clave` (texto completo del usuario, ya
-        normalizado) contra cada alias conocido usando similitud de texto,
-        no coincidencia exacta. Perdona errores de dedo y variantes
-        fonéticas comunes (ej. "polakas" -> "polacas", "recotria" ->
-        "rectoria"). Solo se usa cuando NO hubo ningún match normal, y solo
-        si rapidfuzz está instalado (si no, regresa lista vacía y el bot
-        se comporta igual que antes).
-        """
         if not _RAPIDFUZZ_DISPONIBLE or not clave:
             return []
-
-        # Si el usuario escribió una frase larga (varias palabras) en vez de
-        # solo el nombre de un lugar, comparar palabra por palabra en vez de
-        # la frase completa, porque comparar una frase larga contra un alias
-        # corto casi siempre da una similitud baja y poco confiable.
         palabras = clave.split()
         textos_a_probar = [clave] + palabras if len(palabras) > 1 else [clave]
 
@@ -194,25 +163,12 @@ class BaseDeConocimiento:
 
 
 def _normalizar(texto):
-    """
-    Minúsculas, sin espacios sobrantes y SIN ACENTOS. Debe ser exactamente
-    la misma normalización que usa nlu/interpretador.py, para que comparar
-    longitudes de alias/nombres durante la resolución sea justo (si aquí no
-    se quitaran acentos, un nombre corto sin acentos podía "ganar" por texto
-    a un nombre más largo pero con acentos, aunque el segundo fuera el
-    match correcto).
-    """
     texto = texto.strip().lower()
     reemplazos = str.maketrans("áéíóúñ", "aeioun")
     return texto.translate(reemplazos)
 
 
 def cargar_datos(ruta_archivo=None):
-    """
-    Lee datos/rutas.json y construye una BaseDeConocimiento.
-    Lanza FileNotFoundError o json.JSONDecodeError si el archivo no existe
-    o está mal formado (se recomienda capturarlos en chat/main.py).
-    """
     ruta_archivo = ruta_archivo or RUTA_JSON_POR_DEFECTO
     with open(ruta_archivo, "r", encoding="utf-8") as f:
         datos = json.load(f)
@@ -241,7 +197,7 @@ def cargar_datos(ruta_archivo=None):
 
 
 if __name__ == "__main__":
-    # Pruebas rápidas en consola (Fase 1, punto 3 del flujo de trabajo)
+    # Pruebas rápidas en consola 
     bd = cargar_datos()
     print(f"Rutas cargadas: {list(bd.rutas.keys())}")
     for ruta_id, ruta in bd.rutas.items():
