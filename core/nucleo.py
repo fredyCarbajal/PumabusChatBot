@@ -1,7 +1,7 @@
 """
 Fase 2 - Funciones núcleo. Todo el cálculo real vive aquí, con lógica
-100% determinística: aritmética, Haversine y Dijkstra (vía networkx, que
-es un algoritmo clásico de teoría de grafos, no IA).
+100% aritmética, Haversine y Dijkstra (vía networkx, que
+es un algoritmo clásico de teoría de grafos).
 """
 
 import math
@@ -34,16 +34,6 @@ def rutas_por_parada(bd, nombre):
 
 
 def tiempo_entre_paradas(bd, nombre_a, nombre_b):
-    """
-    Suma de tramos entre dos paradas SI están en la misma ruta Y en el
-    sentido real del recorrido (nombre_a debe aparecer ANTES que nombre_b
-    en esa ruta). Un Pumabús no se regresa, así que "de B a A" cuando el
-    camión va de A a B no es un viaje real: se regresa (None, None) igual
-    que haría mejor_ruta() en ese caso, para que ambas funciones sean
-    consistentes entre sí.
-    Regresa (minutos, ruta_id) o (None, None) si no comparten ruta, alguna
-    no existe, o el sentido pedido es el inverso al de la ruta.
-    """
     for ruta in bd.rutas.values():
         idx_a = _indice_en_ruta(ruta, nombre_a)
         idx_b = _indice_en_ruta(ruta, nombre_b)
@@ -76,12 +66,6 @@ def distancia_haversine_m(lat1, lon1, lat2, lon2):
 
 
 def parada_mas_cercana(bd, lat, lon):
-    """
-    Regresa (Parada, distancia_m) de la parada física más cercana a
-    (lat, lon), comparando contra todas las paradas que SÍ tienen
-    coordenadas cargadas (las que aún no se han geolocalizado se ignoran).
-    Regresa (None, None) si ninguna parada tiene coordenadas todavía.
-    """
     mejor_parada = None
     mejor_dist = float("inf")
     for parada in bd.todas_las_paradas():
@@ -95,12 +79,6 @@ def parada_mas_cercana(bd, lat, lon):
 
 
 def _construir_grafo(bd):
-    """
-    Construye un grafo dirigido donde los nodos son nombres canónicos de
-    parada y las aristas son los tramos de cada ruta, con peso = minutos.
-    Si dos rutas comparten una parada con el mismo nombre, esa parada actúa
-    como nodo de transbordo entre rutas.
-    """
     G = nx.DiGraph()
     for ruta in bd.rutas.values():
         for i in range(len(ruta.paradas) - 1):
@@ -111,7 +89,7 @@ def _construir_grafo(bd):
             u, v = actual.nombre, siguiente.nombre
             peso = actual.tiempo_al_siguiente_min
             # si ya existe una arista más rápida entre las mismas paradas, se
-            # conserva la de menor peso (por si dos rutas comparten tramo)
+            # conserva la de menor peso 
             if G.has_edge(u, v):
                 if peso < G[u][v]["weight"]:
                     G[u][v]["weight"] = peso
@@ -122,16 +100,6 @@ def _construir_grafo(bd):
 
 
 def mejor_ruta(bd, origen, destino):
-    """
-    Encuentra el trayecto de menor tiempo entre dos paradas por nombre.
-    - Si comparten una ruta directa, ese es el camino más simple (Dijkstra
-      lo encuentra igual, ya que en ese caso es el camino más corto).
-    - Si no, arma un grafo con todas las rutas y usa Dijkstra (peso=tiempo)
-      para encontrar la combinación de rutas más rápida, incluyendo posibles
-      transbordos en paradas compartidas.
-    Regresa un dict con: paradas (lista de nombres), tiempo_total_min,
-    tramos (lista de dicts con de/a/minutos/ruta_id); o None si no hay camino.
-    """
     nombre_origen = bd.resolver_nombre(origen) or origen
     nombre_destino = bd.resolver_nombre(destino) or destino
 
