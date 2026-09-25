@@ -177,7 +177,7 @@ PATRONES_PARADA_CERCANA = [
     r"cual es la parada (?:mas|más) (?:cercana|cerca)",
 ]
 
-# Pregunta de SEGUIMIENTO tipo "¿y para X?" / "¿y a X?" 
+# Pregunta de seguimiento tipo "¿y para X?" / "¿y a X?" 
 PATRONES_MISMO_ORIGEN_OTRO_DESTINO = [
     r"^y (?:a|para|hacia|hasta) (?P<destino>.+)$",
     r"^y (?:que tal|como llego) (?:a |para )(?P<destino>.+)$",
@@ -188,7 +188,7 @@ PATRONES_MISMO_ORIGEN_OTRO_DESTINO = [
     r"^no,? mejor (?:quiero ir|voy) a (?P<destino>.+)$",
 ]
 
-# Respuesta CORTA a "¿desde dónde partes?" 
+# Respuesta corta a "¿desde dónde partes?" 
 PATRONES_SOLO_ORIGEN = [
     r"^desde (?P<origen>.+)$",
     r"^partiendo de (?P<origen>.+)$",

@@ -2,7 +2,7 @@
 
 **Lugar y fecha:** Ciudad de México, UNAM — 21 de septiembre de 2026
 **Materia:** Inteligencia Artificial
-**Integrantes del equipo:** Quiroz Salazar Sergio
+**Integrantes del equipo:** Quiroz Salazar Sergio, Luna Quintero Diego Alejandro, Ramírez Terán Emily, Navarro Carbajal Fredy Emiliano
 
 ## Descripción
 

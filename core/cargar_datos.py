@@ -59,7 +59,7 @@ class BaseDeConocimiento:
       - self.rutas: dict {ruta_id: Ruta}
       - self.ruta_paradas: dict {ruta_id: [Parada, ...]} (mismo orden que Ruta.paradas)
       - self.paradas_por_nombre: dict {nombre_normalizado: [Parada, ...]}
-                                  (una parada física puede aparecer en varias rutas)
+        (una parada física puede aparecer en varias rutas)
       - self.alias_a_nombre: dict {alias_normalizado: nombre_canonico}
     """
 
@@ -75,7 +75,7 @@ class BaseDeConocimiento:
             for parada in ruta.paradas:
                 clave = _normalizar(parada.nombre)
                 self.paradas_por_nombre.setdefault(clave, []).append(parada)
-                # el nombre completo también cuenta como "alias" de sí mismo
+                # El nombre completo también cuenta como "alias" de sí mismo
                 self.alias_a_nombre.setdefault(clave, set()).add(parada.nombre)
                 for alias in parada.alias:
                     self.alias_a_nombre.setdefault(_normalizar(alias), set()).add(parada.nombre)
@@ -89,7 +89,7 @@ class BaseDeConocimiento:
 
     def resolver_nombre(self, texto):
         """
-        Versión simple: regresa el nombre canónico si hay una única mejor
+        Versión simple: regresa el nombre original si hay una única mejor
         coincidencia, o None si no hubo match O si hubo ambigüedad (dos
         nombres distintos empatados en especificidad). Para distinguir esos
         dos casos y poder pedirle al usuario que aclare, usar
@@ -105,7 +105,7 @@ class BaseDeConocimiento:
         - Si no hay ninguna coincidencia: (None, [])
         - Si dos o más paradas distintas quedan empatadas en especificidad
         (mismo largo de alias/nombre coincidente), elige automáticamente
-        el nombre MÁS LARGO (más específico), ej. "Facultad de Filosofía"
+        el nombre más largo (más específico), ej. "Facultad de Filosofía"
         gana sobre "Filosofía".
         """
         candidatos = self._buscar_candidatos(texto)

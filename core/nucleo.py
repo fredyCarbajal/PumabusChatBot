@@ -1,13 +1,11 @@
 """
 Fase 2 - Funciones núcleo. Todo el cálculo real vive aquí, con lógica
-100% aritmética, Haversine y Dijkstra (vía networkx, que
+aritmética, Haversine y Dijkstra (vía networkx, que
 es un algoritmo clásico de teoría de grafos).
 """
 
 import math
-
 import networkx as nx
-
 from core.cargar_datos import _normalizar
 
 
@@ -34,6 +32,16 @@ def rutas_por_parada(bd, nombre):
 
 
 def tiempo_entre_paradas(bd, nombre_a, nombre_b):
+    '''
+    Calcula el tiempo de viaje directo entre dos paradas en la misma ruta.
+    Nos regresa:
+        - (minutos, ruta_id) si existe camino directo
+        - (None, None) si:
+          * No comparten ruta
+          * El orden es inverso (B viene antes que A)
+          * Falta datos de tiempo en algún tramo
+
+    '''
     for ruta in bd.rutas.values():
         idx_a = _indice_en_ruta(ruta, nombre_a)
         idx_b = _indice_en_ruta(ruta, nombre_b)
@@ -56,7 +64,7 @@ def _indice_en_ruta(ruta, nombre):
 
 
 def distancia_haversine_m(lat1, lon1, lat2, lon2):
-    """Distancia en metros entre dos coordenadas usando la fórmula de Haversine."""
+    """Cálcula la distancia en metros entre dos coordenadas usando la fórmula de Haversine."""
     R = 6371000  # radio de la Tierra en metros
     p1, p2 = math.radians(lat1), math.radians(lat2)
     dphi = math.radians(lat2 - lat1)
@@ -66,6 +74,14 @@ def distancia_haversine_m(lat1, lon1, lat2, lon2):
 
 
 def parada_mas_cercana(bd, lat, lon):
+    '''
+    Encuentra la parada física más cercana a una coordenadas.
+    Devolvemos:
+            - (Parada, distancia_m): la parada más cercana y distancia en metros
+            - (None, None) si ninguna parada tiene coordenadas cargadas
+    Para recoordar no todas las paradas les asignamos una coordenada, solamente 48 para tienen una coordenada
+
+    '''
     mejor_parada = None
     mejor_dist = float("inf")
     for parada in bd.todas_las_paradas():
@@ -79,6 +95,13 @@ def parada_mas_cercana(bd, lat, lon):
 
 
 def _construir_grafo(bd):
+    '''
+    Construye un grafo dirigido que representa todas las rutas.
+    - Los nodos son la paradas
+    - Aristas los tramos entre paradas
+    - El peso de la arista es el tiempo que tarda de ir de X a Y
+
+    '''
     G = nx.DiGraph()
     for ruta in bd.rutas.values():
         for i in range(len(ruta.paradas) - 1):
@@ -100,6 +123,10 @@ def _construir_grafo(bd):
 
 
 def mejor_ruta(bd, origen, destino):
+    '''
+    Encuentra el camino más rapido, usando Dijkstra.
+    Usando la biblioteca de networkx, con el fin de evitar problemas de implementación desde 0
+    '''
     nombre_origen = bd.resolver_nombre(origen) or origen
     nombre_destino = bd.resolver_nombre(destino) or destino
 

@@ -92,11 +92,11 @@ def _parsear_hora_objetivo(texto_hora):
 
 def responder(bd, intencion, entidades, contexto, texto_original=None):
     """
-    contexto: dict compartido entre turnos (ver main()). Guarda:
-      - contexto["destino_pendiente"]: nombre canónico del destino cuando
+    Diccionario compartido entre turno. Guarda:
+      - contexto["destino_pendiente"]: nombre original del destino cuando
         el bot preguntó "¿desde dónde partes?" y todavía no hay respuesta.
-      - contexto["origen_recordado"]: nombre canónico del último origen
-        que SÍ se resolvió con éxito, para poder responder preguntas de
+      - contexto["origen_recordado"]: nombre original del último origen
+        que sí se resolvió con éxito, para poder responder preguntas de
         seguimiento tipo "¿y para X?" sin que el usuario repita de dónde
         parte.
     Es memoria de la última pregunta/origen, no un historial completo,
@@ -319,7 +319,7 @@ def _resolver_o_aclarar(bd, texto_parada):
     Intenta resolver un nombre de parada. Regresa (nombre_canonico, None) si
     se pudo resolver sin ambigüedad, o (None, mensaje_para_el_usuario) si no
     se reconoció o si el texto es ambiguo entre varias paradas (en cuyo caso
-    NO se adivina: se le pide al usuario que sea más específico).
+    no se adivina: se le pide al usuario que sea más específico).
     """
     nombre, candidatos_ambiguos = bd.resolver_nombre_detallado(texto_parada)
     if nombre:

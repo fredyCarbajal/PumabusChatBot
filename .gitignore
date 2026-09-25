@@ -2,13 +2,12 @@
 venv/
 env/
 
-# Caché de Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# Archivos de Windows/WSL (CRÍTICO)
+
 *.Zone.Identifier
 *:Zone.Identifier
 :Zone.Identifier
